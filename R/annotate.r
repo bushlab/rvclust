@@ -1,15 +1,26 @@
-#' Uses GWAR to annotate genetic variants
+annotate <- function(x) {UseMethod("annotate",x)}
+#' Uses GWAR to annotate the genetic variants in an
+#' rvclustobject.
 #'
-#' @export
-#' @param rv.dat rare variant data frame
-#' @param annotations character list of desired annotations, all by default
-#' @return annotated rare variant data frame
-#' @seealso \code{\link{init}}
+#'   The Genome-Wide Annotation Repository (GWAR) is a\cr 
+#' resource provided by the Bush Lab at Vanderbilt\cr
+#' University's that offers genome-wide annotations.\cr
+#' More information on GWAR can be found at:\cr
+#' \link{http://gwar.mc.vanderbilt.edu/}\cr
+#'   This method uses GWAR to annotate the variants\cr
+#' in an rvclustobject with the annotations requested in\cr
+#' the annotations list.\cr
+#'   Annotations will be appended to the ped object\cr
+#'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
-#' @examples
-#' init(rv.dat)
-annotate <- function(rv,annotations=NA) {
+#' @export
+#' @method
+#' @param rv rvclustobject
+#' @return annotated rvclustobject
+#' @seealso \code{\link{rvclust}}
+annotate.rvclustobject <- function(rv) {
   rv.dat <- rv$variants
+  annotations <- rv$annotations
 
   ## Chromatin State Annotation ##
   if ('chromatin' %in% annotations | is.na(annotations)) {

@@ -1,73 +1,60 @@
-#' Initializes data and covariates for rare variant analysis
+#' Constructor for rvclustobject
 #'
-#' Utility to load data, phenotype, and an optional covariates\cr
-#' file into data frames formatted for rare variant clustering\cr
-#' and analysis with rvclust. If the optional parameters are\cr
-#' specified, the constructor will automatically run those\cr
-#' steps of the analysis. The entire analysis can be run from\cr
-#' the constructor if all necessary parameters are specified.
+#'   Constructor for rvclustobject. Loads ped/map data from the\cr
+#' specified path and filename. If a covariate path and\cr
+#' filename are specified, the covariates will be loaded as well.\cr
+#' If annotations are specified, rvclust will use GWAR to include\cr
+#' the requested annotations. Burden testing can be enabled by\cr
+#' setting the burden flag to true. A threshold can also be set\cr
+#' such that only clusters with fitness exceeding the threshold\cr
+#' are tested for association.
+#'   The rvclust package contains wrappers for various clustering\cr
+#' methods and statistical tests. Documentation on these wrappers\cr
+#' is available. Simply pass the rvclustobject to any method with\cr
+#' an rvclust wrapper and an updated rvclustobject will be returned.
 #'
+#' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @param data.path data directory
-#' @param data.fname data file name
-#' @param cov.path covariate file directory [optional]
-#' @param cov.fname covariate file name [optional]
-#' @param annotations character list/vector of desired annotations [optional]
-#' @param clustermethod cluster function to apply [optional]
-#' @param vars variables around which to cluster [optional - requires clustermethod]
-#' @param key identifies the label column [optional - requires clustermethod]
-#' @param stattest boolean indicating whether to run a statistical analysis [optional - requires clustermethod]
-#' @param burden boolean indicating whether to use burden testing [optional - requires test]
-#' @param min.fit real specifying the minimum cluster fitness to evaluate [optional - requires test]
+#' @method
+#' @param pedmap.path path to pedmap files
+#' @param pedmap.fname basename for pedmap files (no extension)
+#' @param cov.path path to covariates file [optional]
+#' @param cov.fname filename for covariates file (with extension) [optional]
+#' @param annotations list of desired annotations [default ALL]
+#' @param burden boolean indicating whether to burden test [default FALSE]
+#' @param min.fit minimum cluster fitness to test (0..1) [default 0.0]
 #' @return rvclustobject containing\cr
 #'  \tabular{ll}{
-#'  data: \tab ped, map, and cov data
+#'  data: \tab ped, map, and covariate data
 #'  variants: \tab rare variant data.frame\cr
 #'  clusters: \tab empty list of clusters
 #'  clusterinfo: \tab empty list of cluster info
 #'  }
-#' @note Data files should be in PLINK ped/map format
-#' @note Covariates file should have one column for subject
-#' @note Do not include ped/map extension
-#' @note Do include covariate extension IDs followed by one column per covariate
-#' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
+#' @note Data must be in PEDMAP format
+#' @note Covariates - One column for subject; One column per covariate
 #' @examples
-#' init('/path/to','data')
-#' init('/path/to','data','/path/to','covariates.csv')
-rv <- function(data.path,data.fname,cov.path=NA,cov.fname=NA,
-                annotations=NA,clustermethod=NA,vars=NA,key=NA,
-                stattest=FALSE,burden=NA,min.fit=NA) {
+#' rvclustobject('/path/to','pedmap')
+#' rvclustobject(...,cov.path='/path/to',cov.fname='covariates.csv')
+#' rvclustobject(...,annotations=c("CHROMATIN","OTHER"))
+#' rvclustobject(...,burden=TRUE)
+#' rvclustobject(...,min.fit=0.8)
+rvclustobject <- function(pedmap.path,pedmap.fname,cov.path=NA,cov.fname=NA,
+                annotations=NA,burden=FALSE,min.fit=0.0) {
 
 	# Load map, raw, and covariate data
-  data <- load.data(data.path,data.fname,cov.path,cov.fname)
+  data <- load.data(pedmap.path,pedmap.fname,cov.path,cov.fname)
   map.dat <- data[[1]]
   raw.dat <- data[[2]]
   cov.dat <- data[[3]]
   
   # Identify rare variants
-  rv.dat <- rare.vars(data.path,data.fname,map.dat)
+  rv.dat <- rare.vars(pedmap.path,pedmap.fname,map.dat)
   
   # Create the rvclustobject and specify its class
-  rv <- list(data=list("ped"=raw.dat,"map"=map.dat,"cov"=cov.dat),
-  		variants=rv.dat,clusters=NA,clusterinfo=NA)
+  rv <- list("data"=list("ped"=raw.dat,"map"=map.dat,"cov"=cov.dat),
+  		"variants"=rv.dat,"clusters"=NA,"clusterinfo"=NA,
+      "annotations"=annotations,"burden"=burden,"min.fit"=min.fit)
   class(rv) <- "rvclustobject"
-
-  # If annotations are specified, annotate the dataset
-  if (!is.na(annotations)) {rv <- annotate(rv,annotations)}
-
-  # If clustermethod is specified, cluster the variants
-  if (!is.na(clustermethod)) {
-    if (!is.na(vars) & !is.na(keys)) {rv <- clustermethod(rv,vars,key)}
-    else {rv <- clustermethod(rv)}
-  }
-  
-  # If statistical testing is specified, analyze the clusters
-  if (stattest) {
-    if (!is.na(burden) & !is.na(min.fit)) {rv <- analyze(rv,burden,min.fit)}
-    else if (!is.na(burden)) {rv <- analyze(rv,burden)}
-    else if (!is.na(min.fit)) {rv <- analyze(rv,min.fit)}
-    else {rv <- analyze(rv)}
-  }
 
   return(rv)
 }
@@ -75,8 +62,10 @@ rv <- function(data.path,data.fname,cov.path=NA,cov.fname=NA,
 #' S3 method definitions for rvclustobject
 show <- function(x) {UseMethod("show",x)}
 show.rvclustobject <- function(x) {print(c("data","variants","clusters","clusterinfo"))}
+
 print <- function(x) {UseMethod("print",x)}
 print.rvclustobject <- function(x) {print(c("data","variants","clusters","clusterinfo"))}
+
 summary <- function(x) {UseMethod("summary",x)}
 summary.rvclustobject <- function(x) {
   print("rvclust object:")
@@ -97,10 +86,10 @@ summary.rvclustobject <- function(x) {
 ##               Support Functions                ##
 ## ---------------------------------------------- ##
 
-rare.vars <- function(data.path,data.fname,map.dat) {
+rare.vars <- function(pedmap.path,pedmap.fname,map.dat) {
   # Identify the major/minor allele in all SNPs
   
-  snp.dat <- allele.frequency(data.path,data.fname)
+  snp.dat <- allele.frequency(pedmap.path,pedmap.fname)
   snp.dat$SNP <- sapply(snp.dat$SNP,function(x){sub("[[:punct:]]",".",x)})
 
   # Separate the common and rare variants
@@ -112,12 +101,12 @@ rare.vars <- function(data.path,data.fname,map.dat) {
   return(rv.dat)
 }
 
-allele.frequency <- function(data.path,data.fname) {
+allele.frequency <- function(pedmap.path,pedmap.fname) {
   # Given a PED/MAP path and basename, use PLINK to
   # return the rsIDs with frequency > 0 and < 0.05
   
   # Build the full file
-  fin  <- paste(data.path,'/',data.fname,sep='')
+  fin  <- paste(pedmap.path,'/',pedmap.fname,sep='')
   
   # Call PLINK to generate frequency file
   system(paste("plink --noweb --file",fin,"--freq --allow-no-sex",sep=' '))
@@ -145,12 +134,12 @@ add.pos <- function(rv.dat,map.dat) {
   rv.dat <- subset(rv.dat,select=col.names)
 }
 
-load.data <- function(data.path,data.fname,cov.path,cov.fname) {
+load.data <- function(pedmap.path,pedmap.fname,cov.path,cov.fname) {
   
   # Initialize all file names
-  ped.file  <- paste(data.path,"/",data.fname,".ped",sep='')
-  map.file  <- paste(data.path,"/",data.fname,".map",sep='')
-  raw.file  <- paste(data.path,"/",data.fname,".raw",sep='')
+  ped.file  <- paste(pedmap.path,"/",pedmap.fname,".ped",sep='')
+  map.file  <- paste(pedmap.path,"/",pedmap.fname,".map",sep='')
+  raw.file  <- paste(pedmap.path,"/",pedmap.fname,".raw",sep='')
   cov.file = NA
   if (!is.na(cov.path) & !is.na(cov.fname)) {
     cov.file <- paste(cov.path,"/",cov.fname,".cov",sep='')
@@ -158,7 +147,7 @@ load.data <- function(data.path,data.fname,cov.path,cov.fname) {
   
   # If the RAW file is missing, use PLINK to create it
   if (!file.exists(raw.file)) {
-    system(paste("plink --noweb --file",paste(data.path,"/",data.fname,sep=''),"--recodeA --out",paste(data.path,"/",data.fname,sep='')))
+    system(paste("plink --noweb --file",paste(pedmap.path,"/",pedmap.fname,sep=''),"--recodeA --out",paste(pedmap.path,"/",pedmap.fname,sep='')))
   }
   
   # Load the data frames

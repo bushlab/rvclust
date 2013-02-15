@@ -1,37 +1,39 @@
 #' @include clustering.r
 NULL
 
-#' Analyzes clusters for statistical significance
+lm <- function(x) {UseMethod("lm",x)}
+#' Linear Regression across clusters for rvclust (wrapper for stats::lm)
 #' 
-#' Analyzes clusters for statistical significance using\cr
-#' either a collapsing window or burden test. Testing only\cr
-#' those clusters with a specified minimum fitness is encouraged,\cr
-#' but not required.
+#'  Performs linear regression by wrapping the stats::lm\cr
+#' function. Using cluster assignemnt, PEDMAP data is collapsed\cr
+#' into a boolean variable indicating the presence or absence\cr
+#' of a variant in that cluster.\cr
+#'   If burden testing has been specified, the boolean is replaced\cr
+#' with the total number of variants in each cluster.
+#'   Only those clusters with a fitness exceeding the minimum fitness\cr
+#' threshold are tested. They should not be included in multiple\cr
+#' test correction. If no minimum fitness has been threshold was\cr
+#' was specified, all clusters are tested for association.
+#'   If any covariates were specified when creating the rvclustobject,\cr
+#' those covariates will be included in the association test.
+#'   Association results will be appended to the clusterinfo object.
 #'
+#' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @param rarevariants rare variant data frame
-#' @param clusterinfo data frame containing information on each cluster
-#' @param raw.dat genotype/phenotype data frame
-#' @param cov.dat covariate data frame
-#' @param burden boolean indicating whether to use burden testing
-#' @param min.fit real specifying the minimum cluster fitness to evaluate
-#' @return Cluster data frame with statistical results columns
-#' @seealso \code{\link{init}}
+#' @method
+#' @param rvclustobject
+#' @return rvclustobject with linear regression results
+#' @seealso \code{\link{rvclustobject}}
 #' @seealso \code{\link{annotate}}
 #' @seealso \code{\link{pamk}}
 #' @seealso \code{\link{hpower}}
-#' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
-#' @examples
-#' analyze(rarevariants,clusterinfo,raw.dat)
-#' analyze(rarevariants,clusterinfo,raw.dat,cov.dat)
-#' analyze(rarevariants,clusterinfo,raw.dat,burden=TRUE)
-#' analyze(rarevariants,clusterinfo,raw.dat,min.fit=0.5)
-#' analyze(rarevariants,clusterinfo,raw.dat,cov.dat,burden=TRUE,min.fit=0.5)
-analyze <- function(rv,burden=FALSE,min.fit=0) {
+lm.rvclustobject <- function(rv) {
   rarevariants <- rv$variants
   clusterinfo <- rv$clusterinfo
   raw.dat <- rv$data$ped
   cov.dat <- rv$data$cov
+  burden <- rv$burden
+  min.fit <- rv$min.fit
   
   # Reduce to those clusters meeting minimum fitness
   clusterinfo <- clusterinfo[clusterinfo$FIT>min.fit,]
@@ -41,10 +43,7 @@ analyze <- function(rv,burden=FALSE,min.fit=0) {
   
   # Collapse the raw dataset into clusters
   collapsed.dat <- collapse.clusters(rarevariants,raw.dat,burden)
-  
-  # Write the collapsed.dat to file for later reference
-  #write.table(collapsed.dat,paste('temp/',data.fname,"_collapsed.raw",sep=''),col.names=TRUE,row.names=FALSE)
-  
+    
   # Add the covariates
   covariates <- NA
   if (!is.na(cov.dat)) {
@@ -52,7 +51,7 @@ analyze <- function(rv,burden=FALSE,min.fit=0) {
     collapsed.dat <- merge(collapsed.dat,cov.dat,by.x=FID,by.y=cov.dat[1])
   }
   
-  # Run an anova for each CLUSTERID
+  # Run a linear regression for each CLUSTERID
   models <- sapply(clusterids,function(id){
     predictors <- paste("collapsed.dat$\"",id,"\"",sep='')
     if (!is.na(covariates)) {

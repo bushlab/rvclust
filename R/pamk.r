@@ -1,29 +1,30 @@
 #' @include clustering.r
 NULL
 
-#require(fpc)
-#source('clustering.r')
-#' Clusters rare variants using fpc::pamk
+pamk <- function(x) {UseMethod("pamk",x)}
+#' K-Medoids Clustering for rvclust (wrapper for fpc::pamk)
 #'
-#' Wrapper for fpc::pamk standardizing input and output\cr
-#' for rvclust.
+#'   Performs K-Medoids clustering by wrapping the fpc::pamk\cr
+#' function.
+#'   Cluster assignment will be appended to the data$ped object.\cr
+#' The clusters object will be populated with SNP lists for each\cr
+#' cluster. The clusterinfo object will be populated with the\cr
+#' following information about each cluster:\cr
+#' 1. Chromosome\cr
+#' 2. Minimum Base Pair\cr
+#' 3. Maximum Base Pair\cr
+#' 4. Size\cr
+#' 5. Fitness\cr
+#' 6. Annotations (multi-column)\cr
 #'
-#' @export
-#' @param rarevariants rare variant data frame
-#' @param raw.dat genotype/phenotype data frame
-#' @param vars list of strings identifying the cluster columns
-#' @param key string identifying the label column
-#' @return cluster object containing\cr
-#'  \tabular{ll}{
-#'  snp.clusters: \tab list containing SNPs grouped by cluster\cr
-#'  cluster.info: \tab data frame containing information on each cluster\cr
-#'  rarevariants: \tab rare variant data frame with cluster assignment added
-#'  }
-#' @seealso \code{\link{init}}
-#' @seealso \code{\link{annotate}}
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
-#' @examples
-pamk <- function(rv) {
+#' @export
+#' @method
+#' @param rvclustobject
+#' @return clustered rvclustobject
+#' @seealso \code{\link{rvclustobject}}
+#' @seealso \code{\link{annotate}}
+pamk.rvclustobject <- function(rv) {
   rarevariants <- rv$variants
   raw.dat <- rv$data$ped
   
