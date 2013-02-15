@@ -1,21 +1,19 @@
 #' Constructor for rvclustobject
 #'
-#'   Constructor for rvclustobject. Loads ped/map data from the\cr
+#' Constructor for rvclustobject. Loads ped/map data from the\cr
 #' specified path and filename. If a covariate path and\cr
 #' filename are specified, the covariates will be loaded as well.\cr
-#' If annotations are specified, rvclust will use GWAR to include\cr
-#' the requested annotations. Burden testing can be enabled by\cr
-#' setting the burden flag to true. A threshold can also be set\cr
-#' such that only clusters with fitness exceeding the threshold\cr
-#' are tested for association.
-#'   The rvclust package contains wrappers for various clustering\cr
-#' methods and statistical tests. Documentation on these wrappers\cr
-#' is available. Simply pass the rvclustobject to any method with\cr
-#' an rvclust wrapper and an updated rvclustobject will be returned.
+#' Burden testing can be enabled by setting the burden flag to true.\cr
+#' A threshold can also be set such that only clusters with fitness\cr
+#' exceeding the threshold are tested for association.\cr
+#' \cr
+#' The rvclust package contains wrappers for various clustering\cr
+#' methods and statistical tests. See package documentation for more\cr
+#' information on these wrappers. Simply pass the rvclustobject to any\cr
+#' method with an rvclust wrapper and an updated rvclustobject will be returned.
 #'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @method
 #' @param pedmap.path path to pedmap files
 #' @param pedmap.fname basename for pedmap files (no extension)
 #' @param cov.path path to covariates file [optional]
@@ -25,10 +23,10 @@
 #' @param min.fit minimum cluster fitness to test (0..1) [default 0.0]
 #' @return rvclustobject containing\cr
 #'  \tabular{ll}{
-#'  data: \tab ped, map, and covariate data
-#'  variants: \tab rare variant data.frame\cr
-#'  clusters: \tab empty list of clusters
-#'  clusterinfo: \tab empty list of cluster info
+#'  data: \tab ped/map/covariate data\cr
+#'  variants: \tab variant data.frame\cr
+#'  clusters: \tab empty list of clusters\cr
+#'  clusterinfo: \tab empty list of cluster info\cr
 #'  }
 #' @note Data must be in PEDMAP format
 #' @note Covariates - One column for subject; One column per covariate

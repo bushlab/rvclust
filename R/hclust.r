@@ -11,7 +11,6 @@ NULL
 #' to rvclust::hclust following the objective function
 #' will be passed as additional parameters to the function.
 #'
-#' @export
 #' @param rv.dat rare variant data frame
 #' @param raw.dat genotype/phenotype data frame
 #' @param vars list of strings identifying the cluster columns
@@ -25,7 +24,6 @@ NULL
 #' @seealso \code{\link{init}}
 #' @seealso \code{\link{annotate}}
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
-#' @examples
 hclust <- function(rv.dat,raw.dat,vars=c("POS","STATE"),key="SNP",objfun=power,...) {
   
   diss <- dist(rv.dat[,vars])

@@ -13,25 +13,26 @@
 
   A package for applying various clustering\cr algorithms
   to rare variant analysis with\cr either burden or
-  collapsed testing.\cr \cr Suggested Workflow:\cr 1) Load
-  data with \code{\link{init}}\cr 2) Annotate data with
-  \code{\link{annotate}}\cr 3) Cluster data with
-  \code{\link{pamk}} or \code{\link{hpower}}\cr 4) Analyze
-  clusters with \code{\link{analyze.clusters}}\cr
+  collapsed testing.\cr \cr Suggested Workflow:\cr 1)
+  Create an rvclustobject \code{\link{rvclustobject}}\cr 2)
+  Annotate data with \code{\link{annotate}}\cr 3) Cluster
+  data with \code{\link{pamk}} or \code{\link{hpower}}\cr
+  4) Analyze clusters with
+  \code{\link{analyze.clusters}}\cr
 }
 \author{
   R Michael Sivley \email{mike.sivley@vanderbilt.edu}
 }
 \seealso{
-  \code{\link{init}}
+  \code{\link{rvclustobject}}
 
-  \code{\link{annotate}}
+  \code{\link{annotate.rvclustobject}}
 
-  \code{\link{pamk}}
+  \code{\link{pamk.rvclustobject}}
 
-  \code{\link{hpower}}
+  \code{\link{rvcluster.rvclustobject}}
 
-  \code{\link{analyze.clusters}}
+  \code{\link{lm.rvclustobject}}
 }
 \keyword{package}
 

@@ -12,9 +12,10 @@ Depends:
 Collate:
     'rvclust-package.r'
     'clustering.r'
-    'analyzeclusters.r'
     'entropyClust.r'
-    'hpower.r'
-    'init.r'
     'pamk.r'
     'annotate.r'
+    'analyze.r'
+    'hclust.r'
+    'rvclust.r'
+    'rvcluster.r'

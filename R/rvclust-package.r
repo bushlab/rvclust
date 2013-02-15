@@ -14,7 +14,7 @@
 #' either burden or collapsed testing.\cr
 #' \cr
 #' Suggested Workflow:\cr
-#' 1) Load data with \code{\link{init}}\cr
+#' 1) Create an rvclustobject \code{\link{rvclustobject}}\cr
 #' 2) Annotate data with \code{\link{annotate}}\cr
 #' 3) Cluster data with \code{\link{pamk}} or \code{\link{hpower}}\cr
 #' 4) Analyze clusters with \code{\link{analyze.clusters}}\cr
@@ -25,9 +25,9 @@
 #' @title rvclust: Methods for clustering rare variants for statistical analysis
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @keywords package
-#' @seealso \code{\link{init}}
-#' @seealso \code{\link{annotate}}
-#' @seealso \code{\link{pamk}}
-#' @seealso \code{\link{hpower}}
-#' @seealso \code{\link{analyze.clusters}}
+#' @seealso \code{\link{rvclustobject}}
+#' @seealso \code{\link{annotate.rvclustobject}}
+#' @seealso \code{\link{pamk.rvclustobject}}
+#' @seealso \code{\link{rvcluster.rvclustobject}}
+#' @seealso \code{\link{lm.rvclustobject}}
 NULL

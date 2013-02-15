@@ -4,9 +4,10 @@ NULL
 pamk <- function(x) {UseMethod("pamk",x)}
 #' K-Medoids Clustering for rvclust (wrapper for fpc::pamk)
 #'
-#'   Performs K-Medoids clustering by wrapping the fpc::pamk\cr
+#' Performs K-Medoids clustering by wrapping the fpc::pamk\cr
 #' function.
-#'   Cluster assignment will be appended to the data$ped object.\cr
+#' \cr
+#' Cluster assignment will be appended to the data$ped object.\cr
 #' The clusters object will be populated with SNP lists for each\cr
 #' cluster. The clusterinfo object will be populated with the\cr
 #' following information about each cluster:\cr
@@ -19,7 +20,7 @@ pamk <- function(x) {UseMethod("pamk",x)}
 #'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @method
+#' @method pamk rvclustobject
 #' @param rvclustobject
 #' @return clustered rvclustobject
 #' @seealso \code{\link{rvclustobject}}
