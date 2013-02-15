@@ -1,0 +1,20 @@
+Package: rvclust
+Title: rvclust: Methods for clustering rare variants for statistical analysis
+Description: 
+Maintainer: R Michael Sivley <mike.sivley@vanderbilt.edu>
+Author: R Michael Sivley <mike.sivley@vanderbilt.edu>
+Version: 2.0
+License: GPL-3
+Depends:
+    fpc (>= 2.1),
+    RMySQL (>= 0.9),
+    cluster (>= 1.14)
+Collate:
+    'rvclust-package.r'
+    'clustering.r'
+    'analyzeclusters.r'
+    'entropyClust.r'
+    'hpower.r'
+    'init.r'
+    'pamk.r'
+    'annotate.r'
