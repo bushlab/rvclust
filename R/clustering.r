@@ -10,7 +10,7 @@
 #
 ## ------------------------------------------------------------------------- ##
 
-create.cluster.dat <- function(k,rv.dat,states.dat=NA,fitness=NA) {
+create.cluster.dat <- function(k,rv.dat,states.dat=NA,fitness=NA,vars=NA) {
   # Uses the clusters array, rare variant data frame, and chomratin states
   # to generate a new cluster.data frame
   
@@ -23,10 +23,10 @@ create.cluster.dat <- function(k,rv.dat,states.dat=NA,fitness=NA) {
   }
   
   # Add the state information
-  cluster.dat$STATE <- sapply(cluster.dat$CLUSTERID,function(x,dat){dat[dat$CLUSTERID==x,]$STATE[1]},dat=rv.dat)
+  cluster.dat$CHROMATIN <- sapply(cluster.dat$CLUSTERID,function(x,dat){dat[dat$CLUSTERID==x,]$CHROMATIN[1]},dat=rv.dat)
   # Relabel the states with their groups
   label.states <- function(x) {if (x==1) {'promoter'} else if (x==2) {'enhancer'} else if (x==3) {'transcription'} else if (x==4) {'insulator'} else {'insulator'}}
-  cluster.dat$STATE <- sapply(cluster.dat$STATE,label.states)
+  cluster.dat$CHROMATIN <- sapply(cluster.dat$CHROMATIN,label.states)
   
   # Add the chromosome information
   cluster.dat$CHR <- sapply(cluster.dat$CLUSTERID,get.chr,rv.dat=rv.dat)

@@ -1,6 +1,9 @@
 #' @include clustering.r
 NULL
 
+#' rvcluster generic
+#'
+#' @export
 rvcluster <- function(x) {UseMethod("rvcluster",x)}
 #' Hierarchical Clustering using Data Entropy for rvclust
 #'
@@ -87,7 +90,7 @@ rvcluster.rvclustobject <- function(rv) {
 
   # Create a cluster info dataframe
   k <- length(frontier)
-  cluster.info <- create.cluster.dat(k,rarevariants,NA,fitness)
+  cluster.info <- create.cluster.dat(k,rarevariants,NA,fitness,vars)
   
   rv$clusters <- frontier
   rv$clusterinfo <- cluster.info

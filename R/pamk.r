@@ -1,6 +1,9 @@
 #' @include clustering.r
 NULL
 
+#' pamk generic
+#'
+#' @export
 pamk <- function(x) {UseMethod("pamk",x)}
 #' K-Medoids Clustering for rvclust (wrapper for fpc::pamk)
 #'
@@ -30,7 +33,7 @@ pamk.rvclustobject <- function(rv) {
   raw.dat <- rv$data$ped
   
   # Split the data across chromatin state
-  f <- rarevariants$STATE
+  f <- rarevariants$CHROMATIN
   rarevariants$CLUSTERID <- rep(0,length(f))
   df.matrix <- split(rarevariants,f)
   

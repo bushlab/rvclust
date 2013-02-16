@@ -1,3 +1,6 @@
+#' Annotate generic
+#' 
+#' @export
 annotate <- function(x) {UseMethod("annotate",x)}
 #' Uses GWAR to annotate the genetic variants in an
 #' rvclustobject.
@@ -25,7 +28,7 @@ annotate.rvclustobject <- function(rv) {
   annotations <- rv$annotations
 
   ## Chromatin State Annotation ##
-  if ('chromatin' %in% annotations | is.na(annotations)) {
+  if ('CHROMATIN' %in% annotations | is.na(annotations)) {
     
     con <- RMySQL::dbConnect(RMySQL::MySQL(), user="mike",password="thorntonwellslab",
                  dbname="ucsc", host="gwar-dev.mc.vanderbilt.edu")
@@ -41,10 +44,10 @@ annotate.rvclustobject <- function(rv) {
     
     # Annotate rv.dat with chromatin state
     states <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.chrm.state,states.dat=chrom.table)
-    rv.dat$STATE <- states
+    rv.dat$CHROMATIN <- states
   }
   
-  rv$variants <- rv.data
+  rv$variants <- rv.dat
   return(rv)
 }
 

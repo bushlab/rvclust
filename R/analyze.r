@@ -1,6 +1,9 @@
 #' @include clustering.r
 NULL
 
+#' lm generic
+#'
+#' @export
 lm <- function(x) {UseMethod("lm",x)}
 #' Linear Regression across clusters for rvclust (wrapper for stats::lm)
 #' 
@@ -61,7 +64,7 @@ lm.rvclustobject <- function(rv) {
     if (!is.na(covariates)) {
       predictors <- paste(append(predictors,covariates),collapse='+')}
     f <- as.formula(paste("PHENOTYPE ~ ",predictors,sep=''))
-    cluster.lm <- lm(f, data=collapsed.dat)
+    cluster.lm <- stats::lm(f, data=collapsed.dat)
     cluster.lm
   },simplify=FALSE)
   
