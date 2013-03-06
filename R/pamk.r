@@ -53,8 +53,6 @@ pamk.rvclustobject <- function(rv) {
     rarevariants <- rbind(rarevariants,df.matrix[i][[1]])}
   
   # Create a cluster info dataframe
-  print('Calling create.cluster.dat, which is a...')
-  print(class(create.cluster.dat))
   cluster.info <- create.cluster.dat(k,rarevariants)
   
   # Create a vector of clustered SNPs

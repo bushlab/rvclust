@@ -42,8 +42,10 @@ lm.rvclustobject <- function(rv) {
   burden <- rv$burden
   min.fit <- rv$min.fit
   
-  # Reduce to those clusters meeting minimum fitness
-  clusterinfo <- clusterinfo[clusterinfo$FIT>min.fit,]
+  # Reduce to those clusters meeting minimum fitness if
+  # the clustering algorithm recorded fitness
+  if ("FIT" %in% names(clusterinfo)) {
+    clusterinfo <- clusterinfo[clusterinfo$FIT>min.fit,] }
   
   # Extract the unique cluster IDs
   clusterids <- as.character(unique(clusterinfo$CLUSTERID))
