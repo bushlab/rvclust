@@ -7,8 +7,7 @@ NULL
 pamk <- function(x) {UseMethod("pamk",x)}
 #' K-Medoids Clustering for rvclust (wrapper for fpc::pamk)
 #'
-#' Performs K-Medoids clustering by wrapping the fpc::pamk\cr
-#' function.
+#' Performs K-Medoids clustering by wrapping the fpc::pamk function.\cr
 #' \cr
 #' Cluster assignment will be appended to the data$ped object.\cr
 #' The clusters object will be populated with SNP lists for each\cr
@@ -54,6 +53,8 @@ pamk.rvclustobject <- function(rv) {
     rarevariants <- rbind(rarevariants,df.matrix[i][[1]])}
   
   # Create a cluster info dataframe
+  print('Calling create.cluster.dat, which is a...')
+  print(class(create.cluster.dat))
   cluster.info <- create.cluster.dat(k,rarevariants)
   
   # Create a vector of clustered SNPs
