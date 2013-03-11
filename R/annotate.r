@@ -30,14 +30,18 @@ annotate.rvclustobject <- function(rv) {
   ## Chromatin State Annotation ##
   if ('CHROMATIN' %in% annotations | is.na(annotations)) {
     
-    con <- RMySQL::dbConnect(RMySQL::MySQL(), user="mike",password="thorntonwellslab",
-                 dbname="ucsc", host="gwar-dev.mc.vanderbilt.edu")
-    chrom.table <- RMySQL::dbReadTable(con,"Histone_HMM_subset")
-    capture <- RMySQL::dbDisconnect(con)
+    # NOTE: Package will make GWAR API calls when a byloc API
+    # is available. Until that time, chromatin annotations are
+    # loaded from a local file, and limited to cell line: 
+    # wgEncodeBroadHmmGm12878HMM
+
+    # Package chromatin flat file and read directly
+    data(Histone_HMM_subset)
+    chrom.table <- Histone_HMM_subset
+    
     
     get.chrm.state <- function(x,states.dat) {
       # Given a base position, determine the chromatin state
-      
       states <- states.dat[states.dat$chromosome==paste('chr',x[2],sep='') & states.dat$start <= x[1] & x[1] < states.dat$end,]$state[1]
       states <- sapply(states,compress.states)
     }

@@ -47,7 +47,7 @@ rvclustobject <- function(pedmap.path,pedmap.fname,cov.path=NA,cov.fname=NA,
   
   # Identify rare variants
   rv.dat <- rare.vars(pedmap.path,pedmap.fname,map.dat)
-  
+
   # Create the rvclustobject and specify its class
   rv <- list("data"=list("ped"=raw.dat,"map"=map.dat,"cov"=cov.dat),
   		"variants"=rv.dat,"clusters"=NA,"clusterinfo"=NA,
@@ -86,15 +86,22 @@ summary.rvclustobject <- function(x) {
 
 rare.vars <- function(pedmap.path,pedmap.fname,map.dat) {
   # Identify the major/minor allele in all SNPs
-  
-  snp.dat <- allele.frequency(pedmap.path,pedmap.fname)
-  snp.dat$SNP <- sapply(snp.dat$SNP,function(x){sub("[[:punct:]]",".",x)})
 
-  # Separate the common and rare variants
-  rv.dat <- rare.snps(snp.dat)
+  # If running an example
+  if (is.na(pedmap.path) & is.na(pedmap.fname)) {
+    data(rv.dat)
+  }
   
-  # Use the map file to add position information
-  rv.dat <- add.pos(rv.dat,map.dat)
+  else {
+    snp.dat <- allele.frequency(pedmap.path,pedmap.fname)
+    snp.dat$SNP <- sapply(snp.dat$SNP,function(x){sub("[[:punct:]]",".",x)})
+
+    # Separate the common and rare variants
+    rv.dat <- rare.snps(snp.dat)
+    
+    # Use the map file to add position information
+    rv.dat <- add.pos(rv.dat,map.dat)
+  }
 
   return(rv.dat)
 }
@@ -133,30 +140,39 @@ add.pos <- function(rv.dat,map.dat) {
 }
 
 load.data <- function(pedmap.path,pedmap.fname,cov.path,cov.fname) {
-  
-  # Initialize all file names
-  ped.file  <- paste(pedmap.path,"/",pedmap.fname,".ped",sep='')
-  map.file  <- paste(pedmap.path,"/",pedmap.fname,".map",sep='')
-  raw.file  <- paste(pedmap.path,"/",pedmap.fname,".raw",sep='')
-  cov.file = NA
-  if (!is.na(cov.path) & !is.na(cov.fname)) {
-    cov.file <- paste(cov.path,"/",cov.fname,".cov",sep='')
+
+  # If running an example
+  if (is.na(pedmap.path) & is.na(pedmap.fname)) {
+    data(map.dat)
+    names(map.dat) <- c('CHR','SNP','DIST','POS')
+    data(raw.dat)
+    cov.dat <- NA
   }
   
-  # If the RAW file is missing, use PLINK to create it
-  if (!file.exists(raw.file)) {
-    system(paste("plink --noweb --file",paste(pedmap.path,"/",pedmap.fname,sep=''),"--recodeA --out",paste(pedmap.path,"/",pedmap.fname,sep='')))
+  else {
+    # Initialize all file names
+    ped.file  <- paste(pedmap.path,"/",pedmap.fname,".ped",sep='')
+    map.file  <- paste(pedmap.path,"/",pedmap.fname,".map",sep='')
+    raw.file  <- paste(pedmap.path,"/",pedmap.fname,".raw",sep='')
+    cov.file = NA
+    if (!is.na(cov.path) & !is.na(cov.fname)) {
+      cov.file <- paste(cov.path,"/",cov.fname,".cov",sep='')
+    }
+    
+    # If the RAW file is missing, use PLINK to create it
+    if (!file.exists(raw.file)) {
+      system(paste("plink --noweb --file",paste(pedmap.path,"/",pedmap.fname,sep=''),"--recodeA --out",paste(pedmap.path,"/",pedmap.fname,sep='')))
+    }
+    
+    # Load the data frames
+    map.dat  <- read.table(map.file,sep=' ',header=FALSE,col.names=c('CHR','SNP','DIST','POS'))
+    map.dat$SNP <- sapply(map.dat$SNP,function(x){sub("[[:punct:]]",".",x)})
+    raw.dat  <- read.table(raw.file,sep=' ',header=TRUE)
+    names(raw.dat) <- sapply(names(raw.dat),function(x){x <- strsplit(x,'_')[[1]][1]; sub("[[punct:]]",".",x)})
+    cov.dat = NA
+    if (!is.na(cov.file)) {
+      cov.dat <- read.table(cov.file,sep='',header=TRUE)
+    }
   }
-  
-  # Load the data frames
-  map.dat  <- read.table(map.file,sep=' ',header=FALSE,col.names=c('CHR','SNP','DIST','POS'))
-  map.dat$SNP <- sapply(map.dat$SNP,function(x){sub("[[:punct:]]",".",x)})
-  raw.dat  <- read.table(raw.file,sep=' ',header=TRUE)
-  names(raw.dat) <- sapply(names(raw.dat),function(x){x <- strsplit(x,'_')[[1]][1]; sub("[[punct:]]",".",x)})
-  cov.dat = NA
-  if (!is.na(cov.file)) {
-    cov.dat <- read.table(cov.file,sep='',header=TRUE)
-  }
-  
   return(list(map.dat,raw.dat,cov.dat)) 
 }
