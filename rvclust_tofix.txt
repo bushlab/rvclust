@@ -1,0 +1,171 @@
+* using log directory ‘/labs/twells/sivleyrm/rvclust.Rcheck’
+* using R version 2.15.2 (2012-10-26)
+* using platform: x86_64-redhat-linux-gnu (64-bit)
+* using session charset: UTF-8
+* checking for file ‘rvclust/DESCRIPTION’ ... OK
+* this is package ‘rvclust’ version ‘1.0’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking whether package ‘rvclust’ can be installed ... OK
+* checking installed package size ... NOTE
+  installed size is  5.6Mb
+  sub-directories of 1Mb or more:
+    data   5.4Mb
+* checking package directory ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... WARNING
+Loading required package: fpc
+Loading required package: MASS
+Loading required package: cluster
+Loading required package: mclust
+Package ‘mclust’ version 4.0
+Loading required package: flexmix
+Loading required package: lattice
+Loading required package: modeltools
+Loading required package: stats4
+Loading required package: multcomp
+Loading required package: mvtnorm
+Loading required package: survival
+Loading required package: splines
+Loading required package: RMySQL
+Error: package ‘DBI’ required by ‘RMySQL’ could not be found
+Execution halted
+
+It looks like this package has a loading problem when not on .libPaths:
+see the messages for details.
+* checking for unstated dependencies in R code ... OK
+* checking S3 generic/method consistency ... WARNING
+annotate:
+  function(x)
+annotate.rvclustobject:
+  function(rv)
+
+lm:
+  function(x)
+lm.rvclustobject:
+  function(rv)
+
+pamk:
+  function(x)
+pamk.rvclustobject:
+  function(rv)
+
+rvcluster:
+  function(x)
+rvcluster.rvclustobject:
+  function(rv)
+
+See section ‘Generic functions and methods’ of the ‘Writing R
+Extensions’ manual.
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+annotate.rvclustobject: no visible binding for global variable
+  ‘Histone_HMM_subset’
+get.chr: no visible binding for global variable ‘CLUSTERID’
+get.max.bp: no visible binding for global variable ‘CLUSTERID’
+get.min.bp: no visible binding for global variable ‘CLUSTERID’
+hclust: no visible binding for global variable ‘krange’
+hclust: no visible binding for global variable ‘snp.clusters’
+hclust: no visible binding for global variable ‘cluster.info’
+lm.rvclustobject: no visible binding for global variable ‘FID’
+rare.snps: no visible binding for global variable ‘MAF’
+* checking Rd files ... OK
+* checking Rd metadata ... WARNING
+Rd files with duplicated alias 'rvclust':
+  ‘rvclust-package.Rd’ ‘rvclust.Rd’
+Rd files with duplicated alias 'rvclust-package':
+  ‘rvclust-package.Rd’ ‘rvclust.Rd’
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... WARNING
+Undocumented data sets:
+  ‘Histone_HMM_subset’ ‘map.dat’ ‘ped.dat’ ‘raw.dat’ ‘rv.dat’
+All user-level objects in a package should have documentation entries.
+See the chapter ‘Writing R documentation files’ in the ‘Writing R
+Extensions’ manual.
+* checking for code/documentation mismatches ... WARNING
+Functions/methods with usage in documentation object 'analyze.clusters' but not in code:
+  analyze.clusters
+
+Functions/methods with usage in documentation object 'hpower' but not in code:
+  hpower
+
+Functions/methods with usage in documentation object 'init' but not in code:
+  init
+
+* checking Rd \usage sections ... WARNING
+Undocumented arguments in documentation object 'annotate'
+  ‘x’
+
+Undocumented arguments in documentation object 'hclust'
+  ‘objfun’ ‘...’
+
+Undocumented arguments in documentation object 'lm'
+  ‘x’
+
+Undocumented arguments in documentation object 'lm.rvclustobject'
+  ‘rv’
+
+Undocumented arguments in documentation object 'pamk'
+  ‘x’
+
+Undocumented arguments in documentation object 'pamk.rvclustobject'
+  ‘rv’
+
+Undocumented arguments in documentation object 'rvcluster'
+  ‘x’
+
+Undocumented arguments in documentation object 'rvcluster.rvclustobject'
+  ‘rv’
+
+Undocumented arguments in documentation object 'show'
+  ‘x’
+
+Functions with \usage entries need to have the appropriate \alias
+entries, and all their arguments documented.
+The \usage entries must correspond to syntactically valid R code.
+See the chapter ‘Writing R documentation files’ in the ‘Writing R
+Extensions’ manual.
+* checking Rd contents ... WARNING
+Argument items with no description in Rd object 'lm.rvclustobject':
+  ‘rvclustobject’
+
+Argument items with no description in Rd object 'pamk.rvclustobject':
+  ‘rvclustobject’
+
+Argument items with no description in Rd object 'rvcluster.rvclustobject':
+  ‘rvclustobject’
+
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking examples ... ERROR
+Running examples in ‘rvclust-Ex.R’ failed
+The error most likely occurred in:
+
+> ### Name: analyze.clusters
+> ### Title: Analyzes clusters for statistical significance
+> ### Aliases: analyze.clusters
+> 
+> ### ** Examples
+> 
+> analyze.clusters(rv.dat,cluster.dat,raw.dat)
+Error: could not find function "analyze.clusters"
+Execution halted
