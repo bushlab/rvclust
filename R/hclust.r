@@ -24,10 +24,10 @@ NULL
 #' @seealso \code{\link{init}}
 #' @seealso \code{\link{annotate}}
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
-hclust <- function(rv.dat,raw.dat,vars=c("POS","STATE"),key="SNP",objfun=power,...) {
+hclust.rvclustobject <- function(rv.dat,raw.dat,vars=c("POS","STATE"),key="SNP",objfun=power,...) {
   
   diss <- dist(rv.dat[,vars])
-  cluster.tree <- stats::hclust(diss,krange=krange)
+  cluster.tree <- stats::hclust(diss)
  
   return(list("snp.clusters"=snp.clusters,"cluster.info"=cluster.info,"rv.dat"=rv.dat))
 }

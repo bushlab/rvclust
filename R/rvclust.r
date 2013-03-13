@@ -146,6 +146,7 @@ load.data <- function(pedmap.path,pedmap.fname,cov.path,cov.fname) {
     data(map.dat)
     names(map.dat) <- c('CHR','SNP','DIST','POS')
     data(raw.dat)
+    names(raw.dat) <- sapply(names(raw.dat),function(x){x <- strsplit(x,'_')[[1]][1]; sub("[[punct:]]",".",x)})
     cov.dat <- NA
   }
   

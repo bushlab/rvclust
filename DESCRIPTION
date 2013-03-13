@@ -15,7 +15,7 @@ Collate:
     'entropyClust.r'
     'pamk.r'
     'annotate.r'
-    'analyze.r'
     'hclust.r'
     'rvclust.r'
     'rvcluster.r'
+    'lm.r'

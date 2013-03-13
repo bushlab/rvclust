@@ -69,6 +69,9 @@ lm.rvclustobject <- function(rv) {
     cluster.lm <- stats::lm(f, data=collapsed.dat)
     cluster.lm
   },simplify=FALSE)
+
+  print("models: ")
+  print(summary(models))
   
   pvalues <- sapply(models,function(model) {anova(model)$"Pr(>F)"[1]})
   effects <- sapply(models,function(model) {
@@ -80,6 +83,13 @@ lm.rvclustobject <- function(rv) {
   })
   r.squareds <- sapply(models,function(model) {summary(model)$"r.squared"})
   adj.r.squareds <- sapply(models,function(model) {summary(model)$"adj.r.squared"})
+
+  print("pvalues: ")
+  print(summary(pvalues))
+  print("effects: ")
+  print(summary(effects))
+
+
   clusterinfo$PVALUE <- pvalues
   clusterinfo$EFFECT <- effects
   clusterinfo$R.SQUARED <- r.squareds
