@@ -3,7 +3,7 @@ Title: rvclust: Methods for clustering rare variants for statistical analysis
 Description: 
 Maintainer: R Michael Sivley <mike.sivley@vanderbilt.edu>
 Author: R Michael Sivley <mike.sivley@vanderbilt.edu>
-Version: 2.0
+Version: 1.0
 License: GPL-3
 Depends:
     fpc (>= 2.1),

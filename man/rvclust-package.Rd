@@ -8,7 +8,7 @@
 }
 \details{
   \tabular{ll}{ Package: \tab rvclust\cr Type: \tab
-  Package\cr Version: \tab 2.0\cr Date: \tab 2013-02-01\cr
+  Package\cr Version: \tab 1.0\cr Date: \tab 2013-02-01\cr
   License: \tab GPL (>= 2)\cr LazyLoad: \tab yes\cr }
 
   rvclust provides an object oriented approach to rare
