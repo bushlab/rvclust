@@ -5,7 +5,7 @@
   \method{lm}{rvclustobject} (rv)
 }
 \arguments{
-  \item{rvclustobject}{}
+  \item{rv}{rvclustobject}
 }
 \value{
   rvclustobject with linear regression results
@@ -36,7 +36,5 @@
   \code{\link{annotate}}
 
   \code{\link{pamk}}
-
-  \code{\link{hpower}}
 }
 

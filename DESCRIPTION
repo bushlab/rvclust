@@ -7,7 +7,6 @@ Version: 1.0
 License: GPL-3
 Depends:
     fpc (>= 2.1),
-    RMySQL (>= 0.9),
     cluster (>= 1.14)
 Collate:
     'rvclust-package.r'
@@ -15,7 +14,7 @@ Collate:
     'entropyClust.r'
     'pamk.r'
     'annotate.r'
-    'hclust.r'
-    'rvclust.r'
+    'rvclustobject.r'
     'rvcluster.r'
     'lm.r'
+    'sample-data.r'

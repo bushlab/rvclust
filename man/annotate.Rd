@@ -2,7 +2,10 @@
 \alias{annotate}
 \title{Annotate generic}
 \usage{
-  annotate(x)
+  annotate(rv)
+}
+\arguments{
+  \item{rv}{rvclustobject}
 }
 \description{
   Annotate generic

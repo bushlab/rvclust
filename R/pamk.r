@@ -4,7 +4,8 @@ NULL
 #' pamk generic
 #'
 #' @export
-pamk <- function(x) {UseMethod("pamk",x)}
+#' @param rv rvclustobject
+pamk <- function(rv) {UseMethod("pamk",rv)}
 #' K-Medoids Clustering for rvclust (wrapper for fpc::pamk)
 #'
 #' Performs K-Medoids clustering by wrapping the fpc::pamk function.\cr
@@ -23,7 +24,7 @@ pamk <- function(x) {UseMethod("pamk",x)}
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
 #' @method pamk rvclustobject
-#' @param rvclustobject
+#' @param rv rvclustobject
 #' @return clustered rvclustobject
 #' @seealso \code{\link{rvclustobject}}
 #' @seealso \code{\link{annotate}}

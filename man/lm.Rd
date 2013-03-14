@@ -2,7 +2,10 @@
 \alias{lm}
 \title{lm generic}
 \usage{
-  lm(x)
+  lm(rv)
+}
+\arguments{
+  \item{rv}{rvclustobject}
 }
 \description{
   lm generic

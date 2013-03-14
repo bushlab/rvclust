@@ -54,11 +54,7 @@
   covariate
 }
 \examples{
-rvclustobject('/path/to','pedmap')
-rvclustobject(...,cov.path='/path/to',cov.fname='covariates.csv')
-rvclustobject(...,annotations=c("CHROMATIN","OTHER"))
-rvclustobject(...,burden=TRUE)
-rvclustobject(...,min.fit=0.8)
+rvclustobject(NA,NA,annotations=c("CHROMATIN"))
 }
 \author{
   R Michael Sivley \email{mike.sivley@vanderbilt.edu}

@@ -5,7 +5,7 @@
   \method{pamk}{rvclustobject} (rv)
 }
 \arguments{
-  \item{rvclustobject}{}
+  \item{rv}{rvclustobject}
 }
 \value{
   clustered rvclustobject

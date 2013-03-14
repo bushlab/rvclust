@@ -1,6 +1,7 @@
 #' Annotate generic
 #' 
 #' @export
+#' @param rv rvclustobject
 annotate <- function(rv) {UseMethod("annotate",rv)}
 #' Uses GWAR to annotate the genetic variants in an
 #' rvclustobject.

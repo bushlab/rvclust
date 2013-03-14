@@ -2,7 +2,10 @@
 \alias{rvcluster}
 \title{rvcluster generic}
 \usage{
-  rvcluster(x)
+  rvcluster(rv)
+}
+\arguments{
+  \item{rv}{rvclustobject}
 }
 \description{
   rvcluster generic

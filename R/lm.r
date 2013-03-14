@@ -4,7 +4,8 @@ NULL
 #' lm generic
 #'
 #' @export
-lm <- function(x) {UseMethod("lm",x)}
+#' @param rv rvclustobject
+lm <- function(rv) {UseMethod("lm",rv)}
 #' Linear Regression across clusters for rvclust (wrapper for stats::lm)
 #' 
 #' Performs linear regression by wrapping the stats::lm\cr
@@ -28,12 +29,11 @@ lm <- function(x) {UseMethod("lm",x)}
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
 #' @method lm rvclustobject
-#' @param rvclustobject
+#' @param rv rvclustobject
 #' @return rvclustobject with linear regression results
 #' @seealso \code{\link{rvclustobject}}
 #' @seealso \code{\link{annotate}}
 #' @seealso \code{\link{pamk}}
-#' @seealso \code{\link{hpower}}
 lm.rvclustobject <- function(rv) {
   rarevariants <- rv$variants
   clusterinfo <- rv$clusterinfo

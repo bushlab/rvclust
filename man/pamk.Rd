@@ -2,7 +2,10 @@
 \alias{pamk}
 \title{pamk generic}
 \usage{
-  pamk(x)
+  pamk(rv)
+}
+\arguments{
+  \item{rv}{rvclustobject}
 }
 \description{
   pamk generic

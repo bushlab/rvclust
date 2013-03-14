@@ -4,7 +4,8 @@ NULL
 #' rvcluster generic
 #'
 #' @export
-rvcluster <- function(x) {UseMethod("rvcluster",x)}
+#' @param rv rvclustobject
+rvcluster <- function(rv) {UseMethod("rvcluster",rv)}
 #' Hierarchical Clustering using Data Entropy for rvclust
 #'
 #' Top down hierarchical clustering where each level is partitioned\cr
@@ -37,7 +38,7 @@ rvcluster <- function(x) {UseMethod("rvcluster",x)}
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
 #' @method rvcluster rvclustobject
-#' @param rvclustobject
+#' @param rv rvclustobject
 #' @return clustered rvclustobject
 #' @seealso \code{\link{rvclustobject}}
 #' @seealso \code{\link{annotate}}
