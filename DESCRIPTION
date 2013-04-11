@@ -18,3 +18,5 @@ Collate:
     'rvcluster.r'
     'lm.r'
     'sample-data.r'
+    'burdenTest.r'
+    'collapsingTest.r'

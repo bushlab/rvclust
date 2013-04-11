@@ -37,9 +37,9 @@ lm <- function(rv) {UseMethod("lm",rv)}
 lm.rvclustobject <- function(rv) {
   rarevariants <- rv$variants
   clusterinfo <- rv$clusterinfo
-  raw.dat <- rv$data$ped
+  #raw.dat <- rv$data$ped
   cov.dat <- rv$data$cov
-  burden <- rv$burden
+  #burden <- rv$burden
   min.fit <- rv$min.fit
   
   # Reduce to those clusters meeting minimum fitness if
@@ -51,7 +51,8 @@ lm.rvclustobject <- function(rv) {
   clusterids <- as.character(unique(clusterinfo$CLUSTERID))
   
   # Collapse the raw dataset into clusters
-  collapsed.dat <- collapse.clusters(rarevariants,raw.dat,burden)
+  #collapsed.dat <- collapse.clusters(rarevariants,raw.dat,burden)
+  collapsed.dat <- rv$composite.features
     
   # Add the covariates
   covariates <- NA

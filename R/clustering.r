@@ -47,7 +47,7 @@ create.cluster.dat <- function(k,rv.dat,states.dat=NA,fitness=NA,vars=NA) {
   #dists <- sapply(cluster.dat$CLUSTERID,get.chrm.dist,rv.dat=rv.dat,states.dat=states.dat)
 }
 
-collapse.clusters <- function(rv.dat,raw.dat,burden,column.only=FALSE) {
+collapse.clusters <- function(rv.dat,raw.dat,burden=FALSE,column.only=FALSE) {
   # Collapse the raw dataset by cluster
   
   if (class(rv.dat) == "list") {
@@ -68,7 +68,6 @@ collapse.clusters <- function(rv.dat,raw.dat,burden,column.only=FALSE) {
   
   # Convert the collapsed data vector into a cluster-wise data frame
   else {
-    #red.raw.dat <- subset(raw.dat,select=c('FID','IID','PAT','MAT','SEX','PHENOTYPE'))
     red.raw.dat <- raw.dat[,names(raw.dat) %in% c('FID','IID','PAT','MAT','SEX','PHENOTYPE')]
     collapsed.dat <- data.frame(collapsed.vec)
     names(collapsed.dat) <- clusterids
