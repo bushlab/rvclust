@@ -10,7 +10,7 @@ pamk <- function(rv) {UseMethod("pamk",rv)}
 #'
 #' Performs K-Medoids clustering by wrapping the fpc::pamk function.\cr
 #' \cr
-#' Cluster assignment will be appended to the data$ped object.\cr
+#' Cluster assignment will be appended to the variants object.\cr
 #' The clusters object will be populated with SNP lists for each\cr
 #' cluster. The clusterinfo object will be populated with the\cr
 #' following information about each cluster:\cr
@@ -30,7 +30,6 @@ pamk <- function(rv) {UseMethod("pamk",rv)}
 #' @seealso \code{\link{annotate}}
 pamk.rvclustobject <- function(rv) {
   rarevariants <- rv$variants
-  raw.dat <- rv$data$ped
   
   # Split the data across chromatin state
   f <- rarevariants$CHROMATIN

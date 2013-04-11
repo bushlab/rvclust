@@ -20,3 +20,4 @@ Collate:
     'sample-data.r'
     'burdenTest.r'
     'collapsingTest.r'
+    'slidingWindow.r'

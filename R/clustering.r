@@ -23,10 +23,12 @@ create.cluster.dat <- function(k,rv.dat,states.dat=NA,fitness=NA,vars=NA) {
   }
   
   # Add the state information
-  cluster.dat$CHROMATIN <- sapply(cluster.dat$CLUSTERID,function(x,dat){dat[dat$CLUSTERID==x,]$CHROMATIN[1]},dat=rv.dat)
-  # Relabel the states with their groups
-  label.states <- function(x) {if (x==1) {'promoter'} else if (x==2) {'enhancer'} else if (x==3) {'transcription'} else if (x==4) {'insulator'} else {'insulator'}}
-  cluster.dat$CHROMATIN <- sapply(cluster.dat$CHROMATIN,label.states)
+  if ('CHROMATIN' %in% names(rv.dat)) {
+    cluster.dat$CHROMATIN <- sapply(cluster.dat$CLUSTERID,function(x,dat){dat[dat$CLUSTERID==x,]$CHROMATIN[1]},dat=rv.dat)
+    # Relabel the states with their groups
+    label.states <- function(x) {if (x==1) {'promoter'} else if (x==2) {'enhancer'} else if (x==3) {'transcription'} else if (x==4) {'insulator'} else {'insulator'}}
+    cluster.dat$CHROMATIN <- sapply(cluster.dat$CHROMATIN,label.states)
+  }
   
   # Add the chromosome information
   cluster.dat$CHR <- sapply(cluster.dat$CLUSTERID,get.chr,rv.dat=rv.dat)
@@ -39,8 +41,10 @@ create.cluster.dat <- function(k,rv.dat,states.dat=NA,fitness=NA,vars=NA) {
 
   # Determine the size of each cluster
   
-  cluster.dat$SIZE   <- sapply(1:k,function(i){nrow(rv.dat[rv.dat$CLUSTERID==i,])})
-  
+  if ('CLUSTERID' %in% names(rv.dat)) {
+    cluster.dat$SIZE   <- sapply(1:k,function(i){nrow(rv.dat[rv.dat$CLUSTERID==i,])})
+  }
+
   return(cluster.dat)
   
   # Determine the chromatin state distribution
@@ -53,13 +57,17 @@ collapse.clusters <- function(rv.dat,raw.dat,burden=FALSE,column.only=FALSE) {
   if (class(rv.dat) == "list") {
     rv.dat <- rv.dat[[1]]}
   
-  # Extract the unique cluster IDs
-  clusterids <- as.character(unique(rv.dat$CLUSTERID))
-  clusterids <- sort(clusterids)
-  
-  # Use the clusterids and rv.dat to partition raw.dat
-  # into clusters and collapse
-  collapsed.vec <- sapply(clusterids,collapse.cluster,rv.dat=rv.dat,raw.dat=raw.dat,burden=burden)
+  # If cluster analysis was used
+  if ( 'CLUSTERID' %in% names(rv.dat)) {
+    clusterids <- as.character(unique(rv.dat$CLUSTERID))
+    clusterids <- sort(clusterids)
+    collapsed.vec <- sapply(clusterids,collapse.cluster,rv.dat=rv.dat,raw.dat=raw.dat,burden=burden)
+  }
+  # If sliding window analysis was used
+  else {
+    collapsed.vec <- sapply(rv.dat$clusters,collapse.cluster,rv.dat=rv.dat,raw.dat=raw.dat,burden=burden)
+    clusterids <- 1:length(collapsed.vec)
+  }
   
   # If column.only is specified, then only one cluster was passed
   # and only that collapsed column should be returned
@@ -83,9 +91,15 @@ collapse.cluster <- function(id,rv.dat,raw.dat,burden) {
   
   allClass <- function(x) {unlist(lapply(unclass(x),class))}
   
-  # Reduce to SNPs in this cluster (id)
-  #rv.clustered.dat <- subset(rv.dat,CLUSTERID==id)
-  rv.clustered.dat <- rv.dat[rv.dat$CLUSTERID==id,]
+  # Reduce to SNPs in this cluster
+  if ('CLUSTERID' %in% names(rv.dat)) {
+    # Filter by cluster ID
+    rv.clustered.dat <- rv.dat[rv.dat$CLUSTERID==id,]
+  }
+  else {
+    # Filter by membership in the SNP list
+    rv.clustered.dat <- rv.dat[rv.dat$SNP %in% id,]
+  }
   
   # Extract the SNP names
   snps <- as.character(rv.clustered.dat$SNP)
