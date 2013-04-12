@@ -1,11 +1,6 @@
 #' @include clustering.r
 NULL
 
-#' pamk generic
-#'
-#' @export
-#' @param rv rvclustobject
-pamk <- function(rv) {UseMethod("pamk",rv)}
 #' K-Medoids Clustering for rvclust (wrapper for fpc::pamk)
 #'
 #' Performs K-Medoids clustering by wrapping the fpc::pamk function.\cr
@@ -28,7 +23,7 @@ pamk <- function(rv) {UseMethod("pamk",rv)}
 #' @return clustered rvclustobject
 #' @seealso \code{\link{rvclustobject}}
 #' @seealso \code{\link{annotate}}
-pamk.rvclustobject <- function(rv) {
+pamk <- function(rv) {
   rarevariants <- rv$variants
   raw.dat <- rv$data$ped
   

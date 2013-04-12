@@ -1,11 +1,6 @@
 #' @include clustering.r
 NULL
 
-#' collapsing.test generic
-#'
-#' @export
-#' @param rv rvclustobject
-collapsing.test <- function(rv) {UseMethod("collapsing.test",rv)}
 #' Collapses features into composite feature using the OR operator
 #'
 #' Performs a standard collapsing test, which collapses the features in a bin
@@ -20,7 +15,7 @@ collapsing.test <- function(rv) {UseMethod("collapsing.test",rv)}
 #' @seealso \code{\link{rvclustobject}}
 #' @seealso \code{\link{annotate}}
 #' @seealso \code{\link{pamk}}
-collapsing.test.rvclustobject <- function(rv) {
+collapsing.test <- function(rv) {
 
 	variants   <- rv$variants
  	rv$composite.features <- collapse.clusters(variants,rv$data$ped)

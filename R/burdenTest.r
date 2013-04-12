@@ -1,11 +1,6 @@
 #' @include clustering.r
 NULL
 
-#' burden.test generic
-#'
-#' @export
-#' @param rv rvclustobject
-burden.test <- function(rv) {UseMethod("burden.test",rv)}
 #' Collapses features into composite feature using the OR operator
 #'
 #' Performs a standard burden test, which collapses the features in a bin
@@ -20,7 +15,7 @@ burden.test <- function(rv) {UseMethod("burden.test",rv)}
 #' @seealso \code{\link{rvclustobject}}
 #' @seealso \code{\link{annotate}}
 #' @seealso \code{\link{pamk}}
-burden.test.rvclustobject <- function(rv) {
+burden.test <- function(rv) {
 
   variants   <- rv$variants
   rv$composite.features <- collapse.clusters(variants,rv$data$ped,burden=TRUE)

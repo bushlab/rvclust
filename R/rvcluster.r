@@ -1,11 +1,6 @@
 #' @include clustering.r
 NULL
 
-#' rvcluster generic
-#'
-#' @export
-#' @param rv rvclustobject
-rvcluster <- function(rv) {UseMethod("rvcluster",rv)}
 #' Hierarchical Clustering using Data Entropy for rvclust
 #'
 #' Top down hierarchical clustering where each level is partitioned\cr
@@ -42,7 +37,7 @@ rvcluster <- function(rv) {UseMethod("rvcluster",rv)}
 #' @return clustered rvclustobject
 #' @seealso \code{\link{rvclustobject}}
 #' @seealso \code{\link{annotate}}
-rvcluster.rvclustobject <- function(rv) {
+rvcluster <- function(rv) {
   rarevariants <- rv$variants
   raw.dat <- rv$data$ped
   key <- "SNP"

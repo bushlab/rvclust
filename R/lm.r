@@ -1,11 +1,6 @@
 #' @include clustering.r
 NULL
 
-#' lm generic
-#'
-#' @export
-#' @param rv rvclustobject
-lm <- function(rv) {UseMethod("lm",rv)}
 #' Linear Regression across clusters for rvclust (wrapper for stats::lm)
 #' 
 #' Performs linear regression by wrapping the stats::lm\cr
@@ -34,13 +29,10 @@ lm <- function(rv) {UseMethod("lm",rv)}
 #' @seealso \code{\link{rvclustobject}}
 #' @seealso \code{\link{annotate}}
 #' @seealso \code{\link{pamk}}
-lm.rvclustobject <- function(rv) {
+lm <- function(rv,min.fit=0.0) {
   rarevariants <- rv$variants
   clusterinfo <- rv$clusterinfo
-  #raw.dat <- rv$data$ped
   cov.dat <- rv$data$cov
-  #burden <- rv$burden
-  min.fit <- rv$min.fit
   
   # Reduce to those clusters meeting minimum fitness if
   # the clustering algorithm recorded fitness

@@ -32,8 +32,7 @@
 #' @note Covariates - One column for subject; One column per covariate
 #' @examples
 #' rvclustobject(NA,NA,annotations=c("CHROMATIN"))
-rvclustobject <- function(pedmap.path,pedmap.fname,cov.path=NA,cov.fname=NA,
-                annotations=NA,burden=FALSE,min.fit=0.0) {
+rvclustobject <- function(pedmap.path,pedmap.fname,cov.path=NA,cov.fname=NA) {
 
 	# Load map, raw, and covariate data
   data <- load.data(pedmap.path,pedmap.fname,cov.path,cov.fname)

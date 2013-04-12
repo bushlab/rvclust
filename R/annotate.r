@@ -1,8 +1,3 @@
-#' Annotate generic
-#' 
-#' @export
-#' @param rv rvclustobject
-annotate <- function(rv) {UseMethod("annotate",rv)}
 #' Uses GWAR to annotate the genetic variants in an
 #' rvclustobject.
 #'
@@ -24,9 +19,9 @@ annotate <- function(rv) {UseMethod("annotate",rv)}
 #' @param rv rvclustobject
 #' @return annotated rvclustobject
 #' @seealso \code{\link{rvclust}}
-annotate.rvclustobject <- function(rv) {
+annotate <- function(rv,annotations=NA) {
   rv.dat <- rv$variants
-  annotations <- rv$annotations
+  rv$annotations <- annotations
 
   ## Chromatin State Annotation ##
   if ('CHROMATIN' %in% annotations | is.na(annotations)) {
