@@ -37,7 +37,7 @@ NULL
 #' @return clustered rvclustobject
 #' @seealso \code{\link{rvclustobject}}
 #' @seealso \code{\link{annotate}}
-rvcluster <- function(rv) {
+rvcluster <- function(rv,label.by=NA,cluster.by=NA,constrain.by=NA) {
   rarevariants <- rv$variants
   raw.dat <- rv$data$ped
   key <- "SNP"

@@ -45,8 +45,7 @@ rvclustobject <- function(pedmap.path,pedmap.fname,cov.path=NA,cov.fname=NA) {
 
   # Create the rvclustobject and specify its class
   rv <- list("data"=list("ped"=raw.dat,"map"=map.dat,"cov"=cov.dat),
-  		"variants"=rv.dat,"clusters"=NA,"clusterinfo"=NA,
-      "annotations"=annotations,"burden"=burden,"min.fit"=min.fit)
+  		"variants"=rv.dat,"clusters"=NA,"clusterinfo"=NA,"collapsed.dat"=NA)
   class(rv) <- "rvclustobject"
 
   return(rv)

@@ -1,11 +1,6 @@
 #' @include clustering.r
 NULL
 
-#' sliding.window generic
-#'
-#' @export
-#' @param rv rvclustobject
-sliding.window <- function(rv) {UseMethod("sliding.window",rv)}
 #' Sliding Window Analysis for rvclust (wrapper for fpc::pamk)
 #'
 #' Performs sliding window analysis. Included for comparison.\cr
@@ -26,7 +21,7 @@ sliding.window <- function(rv) {UseMethod("sliding.window",rv)}
 #' @return clustered rvclustobject
 #' @seealso \code{\link{rvclustobject}}
 #' @seealso \code{\link{annotate}}
-sliding.window.rvclustobject <- function(rv) {
+sliding.window <- function(rv,label.by=NA,cluster.by=NA,constrain.by=NA) {
 	variants <- rv$variants
 	range <- 2500
 
