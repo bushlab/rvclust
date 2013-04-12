@@ -34,8 +34,8 @@ lm <- function(rv,min.fit=0.0) {
   clusterinfo <- rv$clusterinfo
   cov.dat <- rv$data$cov
   
-  # Reduce to those clusters meeting minimum fitness if
-  # the clustering algorithm recorded fitness
+  # If the clustering algorithm recorded fitness:
+  # Reduce to those clusters meeting minimum fitness
   if ("FIT" %in% names(clusterinfo)) {
     clusterinfo <- clusterinfo[clusterinfo$FIT>min.fit,] }
   

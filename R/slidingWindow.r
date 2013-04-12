@@ -31,20 +31,7 @@ sliding.window <- function(rv,label.by=NA,cluster.by=NA,constrain.by=NA) {
 		variants=variants,range=range)
 
 	# Create a cluster info dataframe
-	cluster.info <- create.cluster.dat(length(snp.clusters),variants)
-
-	# Initialize empty lists to store cluster IDs
-	rv$variants$CLUSTERID = rep(c(),nrow(rv$variants))
-
-	# Given a snp and clusterid, update the rvclustobject
-	identify <- function(snp,clusterid,rv) {
-		clusters <- rv$variants[rv$variants$SNP==snp,]$CLUSTERID
-		rv$variants[rv$variants$SNP==snp,]$CLUSTERID <- append(clusters,clusterid)
-	}
-
-	# Assign all cluster IDs
-	for i in 1:length(snp.clusters) {
-		sapply(snp.clusters[[i]],identify,clusterid=i,rv=rv)}
+	cluster.info <- create.cluster.dat(snp.clusters,variants)
 
 	rv$clusters <- snp.clusters
  	rv$clusterinfo <- cluster.info
