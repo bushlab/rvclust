@@ -9,7 +9,6 @@ NULL
 #'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @method collapsing.test rvclustobject
 #' @param rv rvclustobject
 #' @return rvclustobject with collapsed data (composite features)
 #' @seealso \code{\link{rvclustobject}}
@@ -18,6 +17,6 @@ NULL
 collapsing.test <- function(rv) {
 
 	variants   <- rv$variants
- 	rv$composite.features <- collapse.clusters(variants,rv$data$ped)
+ 	rv$composite.features <- collapse.clusters(variants,rv$clusters,rv$data$ped)
  	return(rv)
 }

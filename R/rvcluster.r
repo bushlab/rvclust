@@ -32,7 +32,6 @@ NULL
 #'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @method rvcluster rvclustobject
 #' @param rv rvclustobject
 #' @return clustered rvclustobject
 #' @seealso \code{\link{rvclustobject}}
@@ -40,13 +39,14 @@ NULL
 rvcluster <- function(rv,label.by=NA,cluster.by=NA,constrain.by=NA) {
   rarevariants <- rv$variants
   raw.dat <- rv$data$ped
-  key <- "SNP"
-  vars <- c("POS",rv$annotations)
+  if (is.na(label.by)) {label.by <- "SNP"}
+  if (is.na(cluster.by)) {cluster.by <- c("POS",rv$annotations)}
+
   
   rarevariants$CLUSTERID <- rep(0,length(rarevariants$POS))
   
-  vars <- append(vars,key)
-  cluster.tree <- entropyClust(rarevariants[,vars],key,raw.dat,'entropy')
+  sub <- append(cluster.by,label.by)
+  cluster.tree <- entropyClust(rarevariants[,names(rarevariants) %in% sub],label.by,raw.dat,'entropy')
 
   # Function to parse the tree and return the frontier as a list of lists
   get.frontier <- function(node) {
@@ -86,7 +86,7 @@ rvcluster <- function(rv,label.by=NA,cluster.by=NA,constrain.by=NA) {
 
   # Create a cluster info dataframe
   k <- length(frontier)
-  cluster.info <- create.cluster.dat(k,rarevariants,NA,fitness,vars)
+  cluster.info <- create.cluster.dat(frontier,rarevariants,fitness)
   
   rv$clusters <- frontier
   rv$clusterinfo <- cluster.info

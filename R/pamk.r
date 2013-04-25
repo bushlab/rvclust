@@ -18,7 +18,6 @@ NULL
 #'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @method pamk rvclustobject
 #' @param rv rvclustobject
 #' @return clustered rvclustobject
 #' @seealso \code{\link{rvclustobject}}
@@ -27,29 +26,37 @@ pamk <- function(rv,label.by=NA,cluster.by=NA,constrain.by=NA) {
   rarevariants <- rv$variants
   raw.dat <- rv$data$ped
   
-  # Split the data across chromatin state
-  f <- rarevariants$CHROMATIN
-  rarevariants$CLUSTERID <- rep(0,length(f))
-  df.matrix <- split(rarevariants,f)
+  if (is.na(label.by)) {label.by <- "SNP"}
+  if (is.na(cluster.by)) {cluster.by <- "POS"}
+
+  # If a constraint variable is specified, force
+  # homogenous clusters wrt constrain.by
+  if (!is.na(constrain.by)) {
+    f <- rarevariants[,constrain.by]
+    rarevariants$CLUSTERID <- rep(0,length(f))
+    df.matrix <- split(rarevariants,f)
+  }
+  else {
+    df.matrix <- list(rarevariants)
+  }
   
-  # Cluster for each chromatin state
+  # Cluster for each constrained data frame
   k <- 0
   for (i in 1:length(df.matrix)) {
-    df <- df.matrix[i][[1]]
+    df <- df.matrix[[i]]
     krange <- 2:min(15,length(df$POS)-1)
-    clusters <- fpc::pamk(df$POS,krange=krange)
+    clusters <- fpc::pamk(df[,cluster.by],krange=krange)
     df$CLUSTERID <- clusters$pamobject$clustering+k
     k <- clusters$nc+k
-    df.matrix[i][[1]] <- df
+    df.matrix[[i]] <- df
   }
   
   # Rebuild the rarevariants dataframe (unsplit)
-  rarevariants <- df.matrix[1][[1]]
-  for (i in 2:length(df.matrix)) {
-    rarevariants <- rbind(rarevariants,df.matrix[i][[1]])}
-  
-  # Create a cluster info dataframe
-  cluster.info <- create.cluster.dat(k,rarevariants)
+  rarevariants <- df.matrix[[1]]
+  if (length(df.matrix) > 1) {
+    for (i in 2:length(df.matrix)) {
+      rarevariants <- rbind(rarevariants,df.matrix[[i]])}
+  }
   
   # Create a vector of clustered SNPs
   snp.clusters <- list()
@@ -57,11 +64,14 @@ pamk <- function(rv,label.by=NA,cluster.by=NA,constrain.by=NA) {
   snp.clusters <- sapply(snp.clusters,function(x){rep('',0)})
   for (i in 1:nrow(rarevariants)) {
     cluster.id <- rarevariants[i,"CLUSTERID"]
-    snp <- as.character(rarevariants[i,"SNP"])
+    snp <- as.character(rarevariants[i,label.by])
     res <- append(snp.clusters[[cluster.id]],snp)
     snp.clusters[[cluster.id]] <- res
   }
- 
+
+  # Create a cluster info dataframe
+  cluster.info <- create.cluster.dat(snp.clusters,rarevariants)
+
   rv$clusters <- snp.clusters
   rv$clusterinfo <- cluster.info
   rv$variants <- rarevariants

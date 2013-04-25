@@ -1,13 +1,33 @@
 \name{pamk}
 \alias{pamk}
-\title{pamk generic}
+\title{K-Medoids Clustering for rvclust (wrapper for fpc::pamk)}
 \usage{
-  pamk(rv)
+  pamk(rv, label.by = NA, cluster.by = NA,
+    constrain.by = NA)
 }
 \arguments{
   \item{rv}{rvclustobject}
 }
+\value{
+  clustered rvclustobject
+}
 \description{
-  pamk generic
+  Performs K-Medoids clustering by wrapping the fpc::pamk
+  function.\cr \cr Cluster assignment will be appended to
+  the data$ped object.\cr The clusters object will be
+  populated with SNP lists for each\cr cluster. The
+  clusterinfo object will be populated with the\cr
+  following information about each cluster:\cr 1.
+  Chromosome\cr 2. Minimum Base Pair\cr 3. Maximum Base
+  Pair\cr 4. Size\cr 5. Fitness\cr 6. Annotations
+  (multi-column)\cr
+}
+\author{
+  R Michael Sivley \email{mike.sivley@vanderbilt.edu}
+}
+\seealso{
+  \code{\link{rvclustobject}}
+
+  \code{\link{annotate}}
 }
 

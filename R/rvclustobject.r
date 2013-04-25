@@ -159,9 +159,9 @@ load.data <- function(pedmap.path,pedmap.fname,cov.path,cov.fname) {
     }
     
     # Load the data frames
-    map.dat  <- read.table(map.file,sep=' ',header=FALSE,col.names=c('CHR','SNP','DIST','POS'))
+    map.dat  <- read.table(map.file,sep='',header=FALSE,col.names=c('CHR','SNP','DIST','POS'))
     map.dat$SNP <- sapply(map.dat$SNP,function(x){sub("[[:punct:]]",".",x)})
-    raw.dat  <- read.table(raw.file,sep=' ',header=TRUE)
+    raw.dat  <- read.table(raw.file,sep='',header=TRUE)
     names(raw.dat) <- sapply(names(raw.dat),function(x){x <- strsplit(x,'_')[[1]][1]; sub("[[punct:]]",".",x)})
     cov.dat = NA
     if (!is.na(cov.file)) {

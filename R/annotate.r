@@ -15,11 +15,10 @@
 #'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @method annotate rvclustobject
 #' @param rv rvclustobject
 #' @return annotated rvclustobject
 #' @seealso \code{\link{rvclust}}
-annotate <- function(rv,annotations=NA) {
+annotate <- function(rv,annotations=NA,file=NA) {
   rv.dat <- rv$variants
   rv$annotations <- annotations
 
@@ -45,6 +44,26 @@ annotate <- function(rv,annotations=NA) {
     # Annotate rv.dat with chromatin state
     states <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.chrm.state,states.dat=chrom.table)
     rv.dat$CHROMATIN <- states
+  }
+
+  ## PDB Coordinate Annotation ##
+  if ('PDB' %in% annotations | is.na(annotations)) {
+    
+    pdbmap <- read.table(file,sep='',header=TRUE)
+
+    get.pdb.coords <- function(x,dim,pdbmap) {
+      # Given a base position, determine the chromatin state
+      coord <- pdbmap[pdbmap$chr==x[2] & pdbmap$start <= x[1] & x[1] <= pdbmap$end,dim][1]
+    }
+
+    # Add PDB_x annotation
+    rv.dat$PDB_x <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.coords,dim='x',pdbmap=pdbmap)
+    rv.dat$PDB_y <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.coords,dim='y',pdbmap=pdbmap)
+    rv.dat$PDB_z <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.coords,dim='z',pdbmap=pdbmap)
+    # Remove all variants without PDB coordinates if PDB is the only annotation
+    if (length(annotations) == 1) {
+      rv.dat <- rv.dat[complete.cases(rv.dat),]
+    }
   }
   
   rv$variants <- rv.dat

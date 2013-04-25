@@ -51,47 +51,54 @@ entropyClust <- function(vars.dat,label.col,data,objfun,depth=0) {
 
   # Exclude certain columns during clustering
   exclude <- c(label.col,"CLUSTERID")
+  nolabel.vars.dat <- vars.dat[,!(names(vars.dat) %in% exclude)]
+  print("vars.dat in entropyClust:")
+  print(summary(vars.dat))
+  print("nolabel.vars.dat in entropyClust:")
+  print(summary(nolabel.vars.dat))
 
   # If there are two or fewer rows left in vars.dat
   # (two columns in data), return as a leaf cluster
   if (nrow(vars.dat) <= 2) {
     #return(c(vars.dat))}
-    return(list(vars.dat$SNP,NA,NA,-2))}
+    return(list(vars.dat[,label.col],NA,NA,-2))}
 
-  # Collapse the collapsed parent for comparison
+  # Collapse the parent for comparison
   vars.dat$CLUSTERID <- rep(1,nrow(vars.dat))
-  parent.collapsed <- collapse.clusters(vars.dat,data,FALSE,column.only=TRUE)
+  parent.collapsed <- collapse.clusters(nolabel.vars.dat,NA,data,FALSE,column.only=TRUE)
   parent.fitness <- FUN(parent.collapsed)
   
   # If the parent's fitness is -1 (no positive cases), return as leaf
   if (parent.fitness == -1) {
-    #return(c(vars.dat))}
-    return(list(vars.dat$SNP,NA,NA,parent.fitness))}
+    #return(c(vars.dat))
+    return(list(vars.dat[,label.col],NA,NA,parent.fitness))}
  
   # Determine the optimal clustering of this partition
   # according to proximity and chromatin state
   vars.dat$CLUSTERID <- cluster::pam(vars.dat[,!(names(vars.dat) %in% exclude)],k=2,cluster.only=TRUE)
+  nolabel.vars.dat$CLUSTERID <- vars.dat$CLUSTERID
   vars.df.matrix <- split(vars.dat,vars.dat$CLUSTERID)
+  nolabel.vars.df.matrix <- split(nolabel.vars.dat,nolabel.vars.dat$CLUSTERID)
  
   # Determine the fitness of the children
-  children.collapsed <- lapply(vars.df.matrix,collapse.clusters,raw.dat=data,burden=FALSE,column.only=TRUE)
+  children.collapsed <- lapply(nolabel.vars.df.matrix,collapse.clusters,NA,raw.dat=data,burden=FALSE,column.only=TRUE)
   fitness.vec <- sapply(children.collapsed,FUN)
   
   # If both children have a fitness of -1 (no positive cases), return the parent as a leaf
   if (length(fitness.vec[fitness.vec == -1]) == length(fitness.vec)) {
     #leaf.vec <- c(vars.dat)
-    return(list(vars.dat$SNP,NA,NA,parent.fitness))}
+    return(list(vars.dat[,label.col],NA,NA,parent.fitness))}
 
   # If either of the children are better fit (higher score) than the parent, continue
   if (length(fitness.vec[fitness.vec >= parent.fitness]) > 0) {
     children <- lapply(vars.df.matrix,entropyClust,label.col=label.col,data=data,objfun=objfun,depth=depth+1)
-    leaf <- list(vars.dat$SNP,children[[1]],children[[2]])}
+    leaf <- list(vars.dat[,label.col],children[[1]],children[[2]])}
 
   # If the parent is better fit than either child, return the parent as a leaf
   else {
     #print('Ending branch. Returning partition as leaf.')
     #leaf.vec <- c(vars.dat)}
-    leaf <- list(vars.dat$SNP,NA,NA,parent.fitness)}
+    leaf <- list(vars.dat[,label.col],NA,NA,parent.fitness)}
   
   return(leaf)
 }

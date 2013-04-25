@@ -10,10 +10,13 @@
 #
 ## ------------------------------------------------------------------------- ##
 
-create.cluster.dat <- function(clusters,rv.dat,states.dat=NA,fitness=NA,vars=NA) {
+create.cluster.dat <- function(clusters,rv.dat,fitness=NA) {
   # Uses the clusters array, rare variant data frame, and chomratin states
   # to generate a new cluster.data frame
   
+  print(clusters)
+  print('---')
+
   # Initialize with the cluster IDs
   k <- length(clusters)
   cluster.dat <- data.frame(CLUSTERID=1:k)
@@ -58,6 +61,7 @@ collapse.clusters <- function(rv.dat,clusters,raw.dat,burden=FALSE,column.only=F
   
   # Use the clusterids and rv.dat to partition raw.dat
   # into clusters and collapse
+
   collapsed.vec <- sapply(clusterids,collapse.cluster,rv.dat=rv.dat,clusters=clusters,raw.dat=raw.dat,burden=burden)
   
   # If column.only is specified, then only one cluster was passed
@@ -71,6 +75,7 @@ collapse.clusters <- function(rv.dat,clusters,raw.dat,burden=FALSE,column.only=F
     collapsed.dat <- data.frame(collapsed.vec)
     names(collapsed.dat) <- clusterids
     collapsed.dat <- append(red.raw.dat,collapsed.dat)
+    collapsed.dat <- data.frame(collapsed.dat)
     return(collapsed.dat)
   }
 }
@@ -84,15 +89,16 @@ collapse.cluster <- function(id,rv.dat,clusters,raw.dat,burden) {
   
   # Reduce to SNPs in this cluster (id)
   #rv.clustered.dat <- subset(rv.dat,CLUSTERID==id)
-  rv.clustered.dat <- rv.dat[rv.dat$SNP %in% clusters[[id]],]
+  #rv.clustered.dat <- rv.dat[rv.dat$SNP %in% clusters[[id]],]
   
   # Extract the SNP names
-  snps <- as.character(rv.clustered.dat$SNP)
+  #snps <- as.character(rv.clustered.dat$SNP)
   
   # Extract those SNP columns from raw.dat
   #snp.cols <- subset(raw.dat,select=names(raw.dat) %in% snps)
   #snp.cols <- raw.dat[snps]
-  snp.cols <- raw.dat[,names(raw.dat) %in% snps]
+  id <- as.numeric(id)
+  snp.cols <- raw.dat[,names(raw.dat) %in% clusters[[id]]]
   
   all.classes <- allClass(snp.cols)
   
@@ -113,14 +119,14 @@ collapse.cluster <- function(id,rv.dat,clusters,raw.dat,burden) {
 get.min.bp <- function(id,clusters,rv.dat) {
   # Given a CLUSTERID and rare variant data frame, determine
   # the minimum base position in the cluster
-  min.bp <- min(rv.dat[rv.dat$SNP %in% clusters[[id]],])
+  min.bp <- min(rv.dat[rv.dat$SNP %in% clusters[[id]],]$POS)
   #min.bp <- min(subset(rv.dat,CLUSTERID==id)$POS)
 }
 
 get.max.bp <- function(id,clusters,rv.dat) {
   # Given a CLUSTERID and rare variant data frame, determine
   # the maximum base position in the cluster
-  max.bp <- max(rv.dat[rv.dat$SNP %in% clusters[[id]],])
+  max.bp <- max(rv.dat[rv.dat$SNP %in% clusters[[id]],]$POS)
   #max.bp <- max(subset(rv.dat,CLUSTERID==id)$POS)
 }
 

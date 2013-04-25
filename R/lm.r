@@ -23,7 +23,6 @@ NULL
 #'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @method lm rvclustobject
 #' @param rv rvclustobject
 #' @return rvclustobject with linear regression results
 #' @seealso \code{\link{rvclustobject}}
@@ -55,16 +54,13 @@ lm <- function(rv,min.fit=0.0) {
   
   # Run a linear regression for each CLUSTERID
   models <- sapply(clusterids,function(id){
-    predictors <- paste("collapsed.dat$\"",id,"\"",sep='')
+    predictors <- paste("collapsed.dat$\"X",id,"\"",sep='')
     if (!is.na(covariates)) {
       predictors <- paste(append(predictors,covariates),collapse='+')}
     f <- as.formula(paste("PHENOTYPE ~ ",predictors,sep=''))
     cluster.lm <- stats::lm(f, data=collapsed.dat)
     cluster.lm
   },simplify=FALSE)
-
-  print("models: ")
-  print(summary(models))
   
   pvalues <- sapply(models,function(model) {anova(model)$"Pr(>F)"[1]})
   effects <- sapply(models,function(model) {
@@ -76,12 +72,6 @@ lm <- function(rv,min.fit=0.0) {
   })
   r.squareds <- sapply(models,function(model) {summary(model)$"r.squared"})
   adj.r.squareds <- sapply(models,function(model) {summary(model)$"adj.r.squared"})
-
-  print("pvalues: ")
-  print(summary(pvalues))
-  print("effects: ")
-  print(summary(effects))
-
 
   clusterinfo$PVALUE <- pvalues
   clusterinfo$EFFECT <- effects

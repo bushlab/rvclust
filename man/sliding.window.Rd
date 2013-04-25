@@ -1,13 +1,32 @@
 \name{sliding.window}
 \alias{sliding.window}
-\title{sliding.window generic}
+\title{Sliding Window Analysis for rvclust (wrapper for fpc::pamk)}
 \usage{
-  sliding.window(rv)
+  sliding.window(rv, win.size = 5000, label.by = NA,
+    cluster.by = NA, constrain.by = NA)
 }
 \arguments{
   \item{rv}{rvclustobject}
 }
+\value{
+  clustered rvclustobject
+}
 \description{
-  sliding.window generic
+  Performs sliding window analysis. Included for
+  comparison.\cr \cr Cluster assignment will be appended to
+  the variants object.\cr The clusters object will be
+  populated with SNP lists for each\cr window. The
+  clusterinfo object will be populated with the\cr
+  following information about each window:\cr 1.
+  Chromosome\cr 2. Minimum Base Pair\cr 3. Maximum Base
+  Pair\cr 4. Size\cr
+}
+\author{
+  R Michael Sivley \email{mike.sivley@vanderbilt.edu}
+}
+\seealso{
+  \code{\link{rvclustobject}}
+
+  \code{\link{annotate}}
 }
 

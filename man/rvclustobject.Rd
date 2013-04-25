@@ -3,8 +3,7 @@
 \title{Constructor for rvclustobject}
 \usage{
   rvclustobject(pedmap.path, pedmap.fname, cov.path = NA,
-    cov.fname = NA, annotations = NA, burden = FALSE,
-    min.fit = 0)
+    cov.fname = NA)
 }
 \arguments{
   \item{pedmap.path}{path to pedmap files}

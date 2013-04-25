@@ -16,14 +16,13 @@ NULL
 #'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @method sliding.window rvclustobject
 #' @param rv rvclustobject
 #' @return clustered rvclustobject
 #' @seealso \code{\link{rvclustobject}}
 #' @seealso \code{\link{annotate}}
-sliding.window <- function(rv,label.by=NA,cluster.by=NA,constrain.by=NA) {
+sliding.window <- function(rv,win.size=5000,label.by=NA,cluster.by=NA,constrain.by=NA) {
 	variants <- rv$variants
-	range <- 2500
+	range <- win.size/2
 
 	# Create a vector of clustered SNPs
 	snp.clusters <- sapply(variants$POS,function(x,variants,range)

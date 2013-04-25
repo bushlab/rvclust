@@ -9,7 +9,6 @@ NULL
 #'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @method burden.test rvclustobject
 #' @param rv rvclustobject
 #' @return rvclustobject with collapsed data (composite features)
 #' @seealso \code{\link{rvclustobject}}
@@ -18,6 +17,6 @@ NULL
 burden.test <- function(rv) {
 
   variants   <- rv$variants
-  rv$composite.features <- collapse.clusters(variants,rv$data$ped,burden=TRUE)
+  rv$composite.features <- collapse.clusters(variants,rv$clusters,rv$data$ped,burden=TRUE)
   return(rv)
 }
