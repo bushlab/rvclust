@@ -13,9 +13,6 @@
 create.cluster.dat <- function(clusters,rv.dat,fitness=NA) {
   # Uses the clusters array, rare variant data frame, and chomratin states
   # to generate a new cluster.data frame
-  
-  print(clusters)
-  print('---')
 
   # Initialize with the cluster IDs
   k <- length(clusters)

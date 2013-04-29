@@ -25,8 +25,8 @@ sliding.window <- function(rv,win.size=5000,label.by=NA,cluster.by=NA,constrain.
 	range <- win.size/2
 
 	# Create a vector of clustered SNPs
-	snp.clusters <- sapply(variants$POS,function(x,variants,range)
-		{variants[abs(x-variants$POS)<range,]$SNP},
+	snp.clusters <- sapply(variants[,cluster.by],function(x,variants,range)
+		{variants[abs(x-variants[,cluster.by])<range,][,label.by]},
 		variants=variants,range=range)
 
 	# Create a cluster info dataframe
