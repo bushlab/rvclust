@@ -51,15 +51,20 @@ annotate <- function(rv,annotations=NA,file=NA) {
     
     pdbmap <- read.table(file,sep='',header=TRUE)
 
-    get.pdb.coords <- function(x,dim,pdbmap) {
-      # Given a base position, determine the chromatin state
+    get.pdb.annotations <- function(x,dim,pdbmap) {
+      # Given a chromosome and base position, determine the chromatin state
       coord <- pdbmap[pdbmap$chr==x[2] & pdbmap$start <= x[1] & x[1] <= pdbmap$end,dim][1]
     }
 
-    # Add PDB_x annotation
-    rv.dat$PDB_x <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.coords,dim='x',pdbmap=pdbmap)
-    rv.dat$PDB_y <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.coords,dim='y',pdbmap=pdbmap)
-    rv.dat$PDB_z <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.coords,dim='z',pdbmap=pdbmap)
+    # Add all PDB annotations
+    # Clustering can be performed with any subset of these annotations
+    # e.g. cluster.by=c("PDB_x","PDB_y","PDB_z")
+    rv.dat$PDBID  <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.annotations,dim='pdbid',pdbmap=pdbmap)
+    rv.dat$CHAIN  <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.annotations,dim='chain',pdbmap=pdbmap)
+    rv.dat$SEQRES <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.annotations,dim='seqres',pdbmap=pdbmap)
+    rv.dat$PDB_x  <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.annotations,dim='x',pdbmap=pdbmap)
+    rv.dat$PDB_y  <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.annotations,dim='y',pdbmap=pdbmap)
+    rv.dat$PDB_z  <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.annotations,dim='z',pdbmap=pdbmap)
     # Remove all variants without PDB coordinates if PDB is the only annotation
     if (length(annotations) == 1) {
       rv.dat <- rv.dat[complete.cases(rv.dat),]

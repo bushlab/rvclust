@@ -7,6 +7,7 @@ Version: 1.0
 License: GPL-3
 Depends:
     fpc (>= 2.1),
+    rms (>= 3.6.3),
     cluster (>= 1.14)
 Collate:
     'rvclust-package.r'
@@ -21,3 +22,4 @@ Collate:
     'burdenTest.r'
     'collapsingTest.r'
     'slidingWindow.r'
+    'logreg.r'
