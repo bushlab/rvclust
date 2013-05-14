@@ -32,19 +32,21 @@
 #' @note Covariates - One column for subject; One column per covariate
 #' @examples
 #' rvclustobject(NA,NA,annotations=c("CHROMATIN"))
-rvclustobject <- function(pedmap.path,pedmap.fname,cov.path=NA,cov.fname=NA) {
+rvclustobject <- function(pedmap.path,pedmap.fname,cov.path=NA,cov.fname=NA,phen.path=NA,phen.fname=NA) {
 
 	# Load map, raw, and covariate data
-  data <- load.data(pedmap.path,pedmap.fname,cov.path,cov.fname)
-  map.dat <- data[[1]]
-  raw.dat <- data[[2]]
-  cov.dat <- data[[3]]
+  data <- load.data(pedmap.path,pedmap.fname,cov.path,cov.fname,phen.path,phen.fname)
+  map.dat  <- data[[1]]
+  raw.dat  <- data[[2]]
+  cov.dat  <- data[[3]]
+  phen.dat <- data[[4]]
   
   # Identify rare variants
+  print("Filtering out common variants...")
   rv.dat <- rare.vars(pedmap.path,pedmap.fname,map.dat)
 
   # Create the rvclustobject and specify its class
-  rv <- list("data"=list("ped"=raw.dat,"map"=map.dat,"cov"=cov.dat),
+  rv <- list("data"=list("ped"=raw.dat,"map"=map.dat,"cov"=cov.dat,"phen"=phen.dat),
   		"variants"=rv.dat,"clusters"=NA,"clusterinfo"=NA,"collapsed.dat"=NA)
   class(rv) <- "rvclustobject"
 
@@ -132,7 +134,7 @@ add.pos <- function(rv.dat,map.dat) {
   rv.dat <- subset(rv.dat,select=col.names)
 }
 
-load.data <- function(pedmap.path,pedmap.fname,cov.path,cov.fname) {
+load.data <- function(pedmap.path,pedmap.fname,cov.path,cov.fname,phen.path,phen.fname) {
 
   # If running an example
   if (is.na(pedmap.path) & is.na(pedmap.fname)) {
@@ -141,6 +143,7 @@ load.data <- function(pedmap.path,pedmap.fname,cov.path,cov.fname) {
     data(raw.dat)
     names(raw.dat) <- sapply(names(raw.dat),function(x){x <- strsplit(x,'_')[[1]][1]; sub("[[punct:]]",".",x)})
     cov.dat <- NA
+    phen.dat <- NA
   }
   
   else {
@@ -148,9 +151,13 @@ load.data <- function(pedmap.path,pedmap.fname,cov.path,cov.fname) {
     ped.file  <- paste(pedmap.path,"/",pedmap.fname,".ped",sep='')
     map.file  <- paste(pedmap.path,"/",pedmap.fname,".map",sep='')
     raw.file  <- paste(pedmap.path,"/",pedmap.fname,".raw",sep='')
-    cov.file = NA
+    cov.file  <- NA
+    phen.file <- NA
     if (!is.na(cov.path) & !is.na(cov.fname)) {
-      cov.file <- paste(cov.path,"/",cov.fname,".cov",sep='')
+      cov.file <- paste(cov.path,"/",cov.fname,sep='')
+    }
+    if (!is.na(phen.path) & !is.na(phen.fname)) {
+      phen.file <- paste(phen.path,"/",phen.fname,sep='')
     }
     
     # If the RAW file is missing, use PLINK to create it
@@ -163,10 +170,14 @@ load.data <- function(pedmap.path,pedmap.fname,cov.path,cov.fname) {
     map.dat$SNP <- sapply(map.dat$SNP,function(x){sub("[[:punct:]]",".",x)})
     raw.dat  <- read.table(raw.file,sep='',header=TRUE)
     names(raw.dat) <- sapply(names(raw.dat),function(x){x <- strsplit(x,'_')[[1]][1]; sub("[[punct:]]",".",x)})
-    cov.dat = NA
+    cov.dat  <- NA
     if (!is.na(cov.file)) {
       cov.dat <- read.table(cov.file,sep='',header=TRUE)
     }
+    phen.dat <- NA
+    if (!is.na(phen.file)) {
+      phen.dat <- read.table(phen.file,sep='',header=TRUE)
+    }
   }
-  return(list(map.dat,raw.dat,cov.dat)) 
+  return(list(map.dat,raw.dat,cov.dat,phen.dat)) 
 }
