@@ -33,8 +33,12 @@
 #' @examples
 #' rvclustobject(NA,NA,annotations=c("CHROMATIN"))
 rvclustobject <- function(observation.file=NA,variant.file=NA,cov.file=NA,outcome.file=NA,max.freq=100.0) {
-  if (tolower(file_ext(observation.file)) == ".ped") {
+  if (is.na(observation.file)) {
+    rv <- load_sample()}
+
+  else if (tolower(unlist(strsplit(basename(observation.file),split="\\."))[2]) == "ped") {
     rv <- load_pedmap(observation.file,variant.file,cov.file,outcome.file,max.freq)}
+  
   else {
     rv <- load_default(observation.file,variant.file,cov.file,outcome.file,max.freq)}
   return(rv)
@@ -62,6 +66,23 @@ summary.rvclustobject <- function(rv) {
   print(summary(rv$clusterinfo))
 }
 
+load_sample <- function() {
+  data(map.dat)
+  names(map.dat) <- c('CHR','SNP','DIST','POS')
+  data(raw.dat)
+  names(raw.dat) <- sapply(names(raw.dat),function(x){x <- strsplit(x,'_')[[1]][1]; sub("[[punct:]]",".",x)})
+  rv <- list(
+            "observations" =raw.dat,
+            "covariates"   =NA,
+            "outcomes"     =NA,
+            "variants"     =rv.dat,
+            "clusters"     =NA,
+            "clusterinfo"  =NA,
+            "collapsed.dat"=NA)
+  class(rv) <- "rvclustobject"
+  return(rv)
+}
+
 load_default <- function(observation.file=NA,variant.file=NA,cov.file=NA,outcome.file=NA,max.freq=100.0) {
   observations <- read.table(observation.file,sep='',header=TRUE)
   variants     <- read.table(variant.file,sep='',header=TRUE)
@@ -76,12 +97,10 @@ load_default <- function(observation.file=NA,variant.file=NA,cov.file=NA,outcome
     writeLines("RVCLUST does not yet support frequency calculations for non-genetic data.")}
 
   rv <- list(
-            "data"= list(
-                  "observations"=observations,
-                  "variants"    =variants,
-                  "covariates"  =covariates,
-                  "outcomes"    =outcomes),
-  		      "variants"     =rv.dat,
+            "observations" =observations,
+            "variants"     =variants,
+            "covariates"   =covariates,
+            "outcomes"     =outcomes,
             "clusters"     =NA,
             "clusterinfo"  =NA,
             "collapsed.dat"=NA)
@@ -90,7 +109,10 @@ load_default <- function(observation.file=NA,variant.file=NA,cov.file=NA,outcome
 }
 
 load_pedmap <- function(ped.file=NA,map.file=NA,cov.file=NA,phen.file=NA,max.freq=100.0) {
-  raw.file <- paste(file_path_sans_ext(ped.file),'.raw',sep='')
+  pedmap.path  <- dirname(ped.file)
+  pedmap.fname <- unlist(strsplit(basename(ped.file),split="\\."))[1]
+  raw.file  <- paste(pedmap.path,"/",pedmap.fname,".raw",sep='')
+
   if (!file.exists(raw.file)) {
     system(paste("plink --noweb --file",paste(pedmap.path,"/",pedmap.fname,sep=''),"--recodeA --out",paste(pedmap.path,"/",pedmap.fname,sep='')))}
     
@@ -105,16 +127,12 @@ load_pedmap <- function(ped.file=NA,map.file=NA,cov.file=NA,phen.file=NA,max.fre
   if (!is.na(phen.file)) {
     phen.dat <- read.table(phen.file,sep='',header=TRUE)}
 
-  if (max.freq < 100.00) {
-
-  }
+  rv.dat <- rare.vars(pedmap.path,pedmap.fname,map.dat,max.freq)
 
   rv <- list(
-            "data"= list(
-                  "observations"=raw.dat,
-                  "variants"    =map.dat,
-                  "covariates"  =cov.dat,
-                  "outcomes"    =phen.dat),
+            "observations" =raw.dat,
+            "covariates"   =cov.dat,
+            "outcomes"     =phen.dat,
             "variants"     =rv.dat,
             "clusters"     =NA,
             "clusterinfo"  =NA,
@@ -123,7 +141,8 @@ load_pedmap <- function(ped.file=NA,map.file=NA,cov.file=NA,phen.file=NA,max.fre
   return(rv)
 }
 
-rare.vars <- function(pedmap.path,pedmap.fname,map.dat) {
+# Deprecated. Required for native PEDMAP load.
+rare.vars <- function(pedmap.path,pedmap.fname,map.dat,max.freq) {
   # Identify the major/minor allele in all SNPs
 
   # If running an example
@@ -136,7 +155,7 @@ rare.vars <- function(pedmap.path,pedmap.fname,map.dat) {
     snp.dat$SNP <- sapply(snp.dat$SNP,function(x){sub("[[:punct:]]",".",x)})
 
     # Separate the common and rare variants
-    rv.dat <- rare.snps(snp.dat)
+    rv.dat <- rare.snps(snp.dat,max.freq)
     
     # Use the map file to add position information
     rv.dat <- add.pos(rv.dat,map.dat)
@@ -145,6 +164,7 @@ rare.vars <- function(pedmap.path,pedmap.fname,map.dat) {
   return(rv.dat)
 }
 
+# Deprecated. Required for native PEDMAP load.
 allele.frequency <- function(pedmap.path,pedmap.fname) {
   # Given a PED/MAP path and basename, use PLINK to
   # return the rsIDs with frequency > 0 and < 0.05
@@ -165,11 +185,12 @@ allele.frequency <- function(pedmap.path,pedmap.fname) {
   freq.dat <- subset(freq.dat,select=c("SNP","MA","MAF"))
 }
 
-rare.snps <- function(freq.dat) {
+rare.snps <- function(freq.dat,max.freq) {
   # Removes all common variants and returns the rare subset
-  rare.snp.dat <- subset(freq.dat,MAF>0 & MAF<0.05)
+  rare.snp.dat <- subset(freq.dat,MAF>0 & MAF<max.freq)
 }
 
+# Deprecated. Required for native PEDMAP load.
 add.pos <- function(rv.dat,map.dat) {
   # Uses the MAP file to add position info to the rare variant data frame
   
@@ -178,6 +199,7 @@ add.pos <- function(rv.dat,map.dat) {
   rv.dat <- subset(rv.dat,select=col.names)
 }
 
+# To be removed
 load.data <- function(pedmap.path,pedmap.fname,cov.path,cov.fname,phen.path,phen.fname) {
 
   # Sample run
