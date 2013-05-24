@@ -17,6 +17,6 @@ NULL
 burden.test <- function(rv) {
 
   variants   <- rv$variants
-  rv$composite.features <- collapse.clusters(variants,rv$clusters,rv$data$ped,burden=TRUE)
+  rv$collapsed <- collapse.clusters(variants,rv$clusters,rv$observations,burden=TRUE)
   return(rv)
 }

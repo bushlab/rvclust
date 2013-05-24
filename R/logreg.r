@@ -31,9 +31,9 @@ NULL
 logreg <- function(rv,min.fit=0.0,phen="PHENOTYPE") {
   rarevariants <- rv$variants
   clusterinfo <- rv$clusterinfo
-  cov.dat <- rv$data$cov
-  phen.dat <- rv$data$phen
-  collapsed.dat <- rv$composite.features
+  cov.dat <- rv$covariates
+  phen.dat <- rv$observations
+  collapsed.dat <- rv$collapsed
   
   # If the clustering algorithm recorded fitness:
   # Reduce to those clusters meeting minimum fitness

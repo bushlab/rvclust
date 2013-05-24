@@ -24,7 +24,7 @@ NULL
 #' @seealso \code{\link{annotate}}
 pamk <- function(rv,label.by=NA,cluster.by=NA,constrain.by=NA) {
   rarevariants <- rv$variants
-  raw.dat <- rv$data$ped
+  raw.dat <- rv$observations
   
   if (is.na(label.by)) {label.by <- "SNP"}
   if (is.na(cluster.by)) {cluster.by <- "POS"}

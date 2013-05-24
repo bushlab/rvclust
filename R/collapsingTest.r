@@ -17,6 +17,6 @@ NULL
 collapsing.test <- function(rv) {
 
 	variants   <- rv$variants
- 	rv$composite.features <- collapse.clusters(variants,rv$clusters,rv$data$ped)
+ 	rv$collapsed <- collapse.clusters(variants,rv$clusters,rv$observations)
  	return(rv)
 }

@@ -78,7 +78,7 @@ load_sample <- function() {
             "variants"     =rv.dat,
             "clusters"     =NA,
             "clusterinfo"  =NA,
-            "collapsed.dat"=NA)
+            "collapsed"=NA)
   class(rv) <- "rvclustobject"
   return(rv)
 }
