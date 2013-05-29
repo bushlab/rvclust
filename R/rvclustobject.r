@@ -1,37 +1,35 @@
 #' Constructor for rvclustobject
 #'
-#' Constructor for rvclustobject. Loads ped/map data from the\cr
-#' specified path and filename. If a covariate path and\cr
-#' filename are specified, the covariates will be loaded as well.\cr
-#' Burden testing can be enabled by setting the burden flag to true.\cr
-#' A threshold can also be set such that only clusters with fitness\cr
-#' exceeding the threshold are tested for association.\cr
+#' ---------------------------------------------------------------------- '#\cr
+#' RVCLUST functionality is modularized for easy extension development. \cr
+#' Each module is standardized to accept an rvclustobject, which is \cr
+#' initialized with variant, observation, covariate, and outcome data \cr
+#' files. \cr
 #' \cr
-#' The rvclust package contains wrappers for various clustering\cr
-#' methods and statistical tests. See package documentation for more\cr
-#' information on these wrappers. Simply pass the rvclustobject to any\cr
-#' method with an rvclust wrapper and an updated rvclustobject will be returned.
-#'
+#' Variant annotations may be applied by \code{\link{annotate}}. \cr
+#' \cr
+#' RVCLUST was originally designed for the analysis of rare genetic \cr
+#' variants. In line with its original intent, PEDMAP files may be \cr
+#' used as input as an alternative to the standardized input format. \cr
+#' This functionality is dependent on PLINK. \cr
+#' ---------------------------------------------------------------------- '#\cr
+#' 
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @param pedmap.path path to pedmap files
-#' @param pedmap.fname basename for pedmap files (no extension)
-#' @param cov.path path to covariates file [optional]
-#' @param cov.fname filename for covariates file (with extension) [optional]
-#' @param annotations list of desired annotations [default ALL]
-#' @param burden boolean indicating whether to burden test [default FALSE]
-#' @param min.fit minimum cluster fitness to test (0..1) [default 0.0]
-#' @return rvclustobject containing\cr
+#' @param observation.file observation data (or PED)
+#' @param variant.file variant data (or MAP)
+#' @param cov.file covariate data
+#' @param outcome.file outcome data
+#' @return rvclustobject with fields\cr
 #'  \tabular{ll}{
-#'  data: \tab ped/map/covariate data\cr
-#'  variants: \tab variant data.frame\cr
-#'  clusters: \tab empty list of clusters\cr
-#'  clusterinfo: \tab empty list of cluster info\cr
+#'  variants\cr
+#'  observations\cr
+#'  covariates\cr
+#'  outcomes\cr
+#'  clusters\cr
+#'  clusterinfo\cr
+#'  collapsed\cr
 #'  }
-#' @note Data must be in PEDMAP format
-#' @note Covariates - One column for subject; One column per covariate
-#' @examples
-#' rvclustobject(NA,NA,annotations=c("CHROMATIN"))
 rvclustobject <- function(observation.file=NA,variant.file=NA,cov.file=NA,outcome.file=NA,max.freq=100.0) {
   if (is.na(observation.file)) {
     rv <- load_sample()}
@@ -141,7 +139,10 @@ load_pedmap <- function(ped.file=NA,map.file=NA,cov.file=NA,phen.file=NA,max.fre
   return(rv)
 }
 
-# Deprecated. Required for native PEDMAP load.
+# --------------------------------------------------------------------------- #
+# Deprecated methods below are required for PEDMAP processing.
+# --------------------------------------------------------------------------- #
+
 rare.vars <- function(pedmap.path,pedmap.fname,map.dat,max.freq) {
   # Identify the major/minor allele in all SNPs
 
@@ -164,7 +165,6 @@ rare.vars <- function(pedmap.path,pedmap.fname,map.dat,max.freq) {
   return(rv.dat)
 }
 
-# Deprecated. Required for native PEDMAP load.
 allele.frequency <- function(pedmap.path,pedmap.fname) {
   # Given a PED/MAP path and basename, use PLINK to
   # return the rsIDs with frequency > 0 and < 0.05
@@ -190,7 +190,6 @@ rare.snps <- function(freq.dat,max.freq) {
   rare.snp.dat <- subset(freq.dat,MAF>0 & MAF<max.freq)
 }
 
-# Deprecated. Required for native PEDMAP load.
 add.pos <- function(rv.dat,map.dat) {
   # Uses the MAP file to add position info to the rare variant data frame
   
