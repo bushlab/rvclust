@@ -1,23 +1,16 @@
-#' Uses GWAR to annotate the genetic variants in an
-#' rvclustobject.
+#' Applies annotations to variants for informed clustering
 #'
-#' The Genome-Wide Annotation Repository (GWAR) is a\cr 
-#' resource provided by the Bush Lab at Vanderbilt\cr
-#' University's that offers genome-wide annotations.\cr
-#' More information on GWAR can be found at:\cr
-#' \url{http://gwar.mc.vanderbilt.edu/}\cr
-#' \cr
-#' This method uses GWAR to annotate the variants\cr
-#' in an rvclustobject with the annotations requested in\cr
-#' the annotations list.\cr
-#' \cr
-#' Annotations will be appended to the ped object\cr
+#' ---------------------------------------------------------------------- '#\cr
+#' Annotations allow RVCLUST to estimate which features are likely to have \cr
+#' similar effects without looking at the outcomes in advance. This \cr
+#' preserves much of the statistical integrity lost with supervised \cr
+#' learning. These annotations may also aid in interpreting results. \cr
+#' ---------------------------------------------------------------------- '#\cr
 #'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
 #' @param rv rvclustobject
 #' @return annotated rvclustobject
-#' @seealso \code{\link{rvclust}}
 annotate <- function(rv,annotations=NA,file=NA) {
   rv.dat <- rv$variants
   rv$annotations <- annotations
