@@ -14,9 +14,6 @@ NULL
 #' @return clustered rvclustobject
 pamk <- function(rv,label.by=NA,cluster.by=NA,constrain.by=NA) {
   variants <- rv$variants
-  
-  if (is.na(label.by)) {label.by <- "SNP"}
-  if (is.na(cluster.by)) {cluster.by <- "POS"}
 
   # If a constraints are specified, force
   # homogenous clusters wrt constrain.by
@@ -48,18 +45,18 @@ pamk <- function(rv,label.by=NA,cluster.by=NA,constrain.by=NA) {
   }
   
   # Create a vector of clustered SNPs
-  clusters <- list()
+  clusters         <- list()
   length(clusters) <- k
-  clusters <- sapply(clusters,function(x){rep('',0)})
+  clusters         <- sapply(clusters,function(x){rep('',0)})
   for (i in 1:nrow(variants)) {
     cluster.id <- variants[i,"CLUSTERID"]
-    snp <- as.character(variants[i,label.by])
-    res <- append(clusters[[cluster.id]],snp)
+    snp        <- as.character(variants[i,label.by])
+    res        <- append(clusters[[cluster.id]],snp)
     clusters[[cluster.id]] <- res
   }
 
   # Create a cluster info dataframe
-  clusterinfo <- create.cluster.dat(clusters,variants)
+  clusterinfo    <- create.cluster.dat(clusters,variants)
 
   rv$clusters    <- clusters
   rv$clusterinfo <- clusterinfo
