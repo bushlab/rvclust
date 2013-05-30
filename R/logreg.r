@@ -1,6 +1,3 @@
-#' @include clustering.r
-NULL
-
 #' Logistic Regression across clusters for rvclust (wrapper for rms::lrm)
 #' 
 #' ---------------------------------------------------------------------- '#\cr

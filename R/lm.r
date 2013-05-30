@@ -1,6 +1,3 @@
-#' @include clustering.r
-NULL
-
 #' Linear Regression across clusters for rvclust (wrapper for stats::lm)
 #' 
 #' ---------------------------------------------------------------------- '#\cr
