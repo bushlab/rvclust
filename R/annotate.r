@@ -40,7 +40,7 @@ annotate <- function(rv,annotations=NA,file=NA) {
   }
 
   ## PDB Coordinate Annotation ##
-  if ('PDB' %in% annotations | is.na(annotations)) {
+  if ('PDB' %in% annotations) {
     
     pdbmap <- read.table(file,sep='',header=TRUE)
 
@@ -50,15 +50,14 @@ annotate <- function(rv,annotations=NA,file=NA) {
     }
 
     # Add all PDB annotations
-    # Clustering can be performed with any subset of these annotations
-    # e.g. cluster.by=c("PDB_x","PDB_y","PDB_z")
     rv.dat$PDBID  <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.annotations,dim='pdbid',pdbmap=pdbmap)
     rv.dat$CHAIN  <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.annotations,dim='chain',pdbmap=pdbmap)
     rv.dat$SEQRES <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.annotations,dim='seqres',pdbmap=pdbmap)
     rv.dat$PDB_x  <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.annotations,dim='x',pdbmap=pdbmap)
     rv.dat$PDB_y  <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.annotations,dim='y',pdbmap=pdbmap)
     rv.dat$PDB_z  <- apply(cbind(rv.dat$POS,rv.dat$CHR),1,get.pdb.annotations,dim='z',pdbmap=pdbmap)
-    # Remove all variants without PDB coordinates if PDB is the only annotation
+    
+    # If PDB is the only annotation, remove all variants without PDB annotations
     if (length(annotations) == 1) {
       rv.dat <- rv.dat[complete.cases(rv.dat),]
     }
