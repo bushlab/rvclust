@@ -14,12 +14,11 @@ NULL
 #' @export
 #' @param rv rvclustobject
 #' @return rvclustobject with logistic regression results
-logreg <- function(rv,min.fit=0.0,phen="PHENOTYPE") {
-  rarevariants <- rv$variants
+logreg <- function(rv,label.by=NA,min.fit=0.0,phen="PHENOTYPE") {
   clusterinfo <- rv$clusterinfo
   cov.dat <- rv$covariates
-  phen.dat <- rv$observations
-  collapsed.dat <- rv$collapsed
+  phen.dat <- rv$outcomes
+  collapsed <- rv$collapsed
   
   # If the clustering algorithm recorded fitness, filter clusters below 
   # the minimum fitness threshold
@@ -34,23 +33,23 @@ logreg <- function(rv,min.fit=0.0,phen="PHENOTYPE") {
   if (!any(is.na(cov.dat))) {
     covariates <- names(cov.dat)
     covariates <- covariates[3:length(covariates)]  # Filter out IDs
-    collapsed.dat <- merge(collapsed.dat,cov.dat,by='FID')
+    collapsed <- merge(x=collapsed,y=cov.dat,by=label.by)
   }
   phenotypes <- NA
   # Add additional phenotypes if provided
   if (!any(is.na(phen.dat))) {
     phenotypes <- names(phen.dat)
     phenotypes <- phenotypes[3:length(phenotypes)]  # Filter out IDs
-    collapsed.dat <- merge(x=collapsed.dat,y=phen.dat,by='FID')
+    collapsed <- merge(x=collapsed,y=phen.dat,by=label.by)
   }
   
   # Run a logistic regression for each CLUSTERID
   models <- sapply(clusterids,function(id){
-    predictors <- paste("collapsed.dat$\"X",id,"\"",sep='')
+    predictors <- paste("collapsed$\"X",id,"\"",sep='')
     if (!any(is.na(covariates))) {
       predictors <- paste(append(predictors,covariates),collapse='+')}
     f <- as.formula(paste(phen," ~ ",predictors,sep=''))
-    cluster.logreg <- rms::lrm(f, data=collapsed.dat)
+    cluster.logreg <- rms::lrm(f, data=collapsed)
     return(cluster.logreg)
   },simplify=FALSE)
   

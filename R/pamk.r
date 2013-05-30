@@ -44,14 +44,14 @@ pamk <- function(rv,label.by=NA,cluster.by=NA,constrain.by=NA) {
       variants <- rbind(variants,df.matrix[[i]])}
   }
   
-  # Create a vector of clustered SNPs
+  # Create a vector of clustered variants
   clusters         <- list()
   length(clusters) <- k
   clusters         <- sapply(clusters,function(x){rep('',0)})
   for (i in 1:nrow(variants)) {
     cluster.id <- variants[i,"CLUSTERID"]
-    snp        <- as.character(variants[i,label.by])
-    res        <- append(clusters[[cluster.id]],snp)
+    variant    <- as.character(variants[i,label.by])
+    res        <- append(clusters[[cluster.id]],variant)
     clusters[[cluster.id]] <- res
   }
 
