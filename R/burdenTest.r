@@ -14,7 +14,7 @@ NULL
 #' @param rv rvclustobject
 #' @return rvclustobject with collapsed data (composite features)
 burden.test <- function(rv) {
-  variants   <- rv$variants
+  variants     <- rv$variants
   rv$collapsed <- collapse.clusters(variants,rv$clusters,rv$observations,burden=TRUE)
   return(rv)
 }

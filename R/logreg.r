@@ -13,9 +13,9 @@
 #' @return rvclustobject with logistic regression results
 logreg <- function(rv,label.by=NA,min.fit=0.0,phen="PHENOTYPE") {
   clusterinfo <- rv$clusterinfo
-  cov.dat <- rv$covariates
-  phen.dat <- rv$outcomes
-  collapsed <- rv$collapsed
+  cov.dat     <- rv$covariates
+  phen.dat    <- rv$outcomes
+  collapsed   <- rv$collapsed
   
   # If the clustering algorithm recorded fitness, filter clusters below 
   # the minimum fitness threshold

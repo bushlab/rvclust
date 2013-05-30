@@ -15,7 +15,7 @@ NULL
 #' @param rv rvclustobject
 #' @return rvclustobject with collapsed data
 collapsing.test <- function(rv) {
-	variants   <- rv$variants
+	variants     <- rv$variants
  	rv$collapsed <- collapse.clusters(variants,rv$clusters,rv$observations)
  	return(rv)
 }
