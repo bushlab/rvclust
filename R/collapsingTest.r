@@ -3,17 +3,17 @@ NULL
 
 #' Collapses features into composite feature using the OR operator
 #'
-#' Performs a standard collapsing test, which collapses the features in a bin
-#' by taking the OR of all features. For each subject, the composite feature
-#' is represented as positive if any of the individual events have occurred.
+#' ---------------------------------------------------------------------- '#\cr
+#' Performs a standard collapsing test, which collapses the features in a \cr
+#' bin by taking the OR of all features. For each subject, the composite \cr
+#' feature is represented as positive if any of the individual events \cr
+#' have occurred. \cr
+#' ---------------------------------------------------------------------- '#\cr
 #'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
 #' @param rv rvclustobject
-#' @return rvclustobject with collapsed data (composite features)
-#' @seealso \code{\link{rvclustobject}}
-#' @seealso \code{\link{annotate}}
-#' @seealso \code{\link{pamk}}
+#' @return rvclustobject with collapsed data
 collapsing.test <- function(rv) {
 
 	variants   <- rv$variants
