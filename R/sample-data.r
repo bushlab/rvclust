@@ -30,5 +30,9 @@ NULL
 #' @format tab delimited
 NULL
 
-
-
+#' @name test.rv
+#' @title RVCLUST Module Testing
+#' @description Initialized rvclustobject for module testing
+#' @docType data
+#' @usage test.rv
+NULL
