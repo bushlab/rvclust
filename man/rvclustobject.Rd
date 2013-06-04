@@ -2,58 +2,37 @@
 \alias{rvclustobject}
 \title{Constructor for rvclustobject}
 \usage{
-  rvclustobject(pedmap.path, pedmap.fname, cov.path = NA,
-    cov.fname = NA)
+  rvclustobject(observation.file = NA, variant.file = NA,
+    cov.file = NA, outcome.file = NA, max.freq = 100)
 }
 \arguments{
-  \item{pedmap.path}{path to pedmap files}
+  \item{observation.file}{observation data (or PED)}
 
-  \item{pedmap.fname}{basename for pedmap files (no
-  extension)}
+  \item{variant.file}{variant data (or MAP)}
 
-  \item{cov.path}{path to covariates file [optional]}
+  \item{cov.file}{covariate data}
 
-  \item{cov.fname}{filename for covariates file (with
-  extension) [optional]}
-
-  \item{annotations}{list of desired annotations [default
-  ALL]}
-
-  \item{burden}{boolean indicating whether to burden test
-  [default FALSE]}
-
-  \item{min.fit}{minimum cluster fitness to test (0..1)
-  [default 0.0]}
+  \item{outcome.file}{outcome data}
 }
 \value{
-  rvclustobject containing\cr \tabular{ll}{ data: \tab
-  ped/map/covariate data\cr variants: \tab variant
-  data.frame\cr clusters: \tab empty list of clusters\cr
-  clusterinfo: \tab empty list of cluster info\cr }
+  rvclustobject with fields\cr \tabular{ll}{ variants\cr
+  observations\cr covariates\cr outcomes\cr clusters\cr
+  clusterinfo\cr collapsed\cr }
 }
 \description{
-  Constructor for rvclustobject. Loads ped/map data from
-  the\cr specified path and filename. If a covariate path
-  and\cr filename are specified, the covariates will be
-  loaded as well.\cr Burden testing can be enabled by
-  setting the burden flag to true.\cr A threshold can also
-  be set such that only clusters with fitness\cr exceeding
-  the threshold are tested for association.\cr \cr The
-  rvclust package contains wrappers for various
-  clustering\cr methods and statistical tests. See package
-  documentation for more\cr information on these wrappers.
-  Simply pass the rvclustobject to any\cr method with an
-  rvclust wrapper and an updated rvclustobject will be
-  returned.
-}
-\note{
-  Data must be in PEDMAP format
-
-  Covariates - One column for subject; One column per
-  covariate
-}
-\examples{
-rvclustobject(NA,NA,annotations=c("CHROMATIN"))
+  ----------------------------------------------------------------------
+  '#\cr RVCLUST functionality is modularized for easy
+  extension development. \cr Each module is standardized to
+  accept an rvclustobject, which is \cr initialized with
+  variant, observation, covariate, and outcome data \cr
+  files. \cr \cr Variant annotations may be applied by
+  \code{\link{annotate}}. \cr \cr RVCLUST was originally
+  designed for the analysis of rare genetic \cr variants.
+  In line with its original intent, PEDMAP files may be \cr
+  used as input as an alternative to the standardized input
+  format. \cr This functionality is dependent on PLINK. \cr
+  ----------------------------------------------------------------------
+  '#\cr
 }
 \author{
   R Michael Sivley \email{mike.sivley@vanderbilt.edu}

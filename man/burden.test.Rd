@@ -11,19 +11,16 @@
   rvclustobject with collapsed data (composite features)
 }
 \description{
-  Performs a standard burden test, which collapses the
-  features in a bin by taking the SUM of all features. For
-  each subject, the composite feature is represented by the
-  burden of events occurring in the bin.
+  ----------------------------------------------------------------------
+  '#\cr Performs a standard burden test, which collapses
+  the features in a bin \cr by taking the SUM of all
+  features. For each subject, the composite \cr feature is
+  represented by the burden of events occurring in the bin.
+  \cr
+  ----------------------------------------------------------------------
+  '#\cr
 }
 \author{
   R Michael Sivley \email{mike.sivley@vanderbilt.edu}
-}
-\seealso{
-  \code{\link{rvclustobject}}
-
-  \code{\link{annotate}}
-
-  \code{\link{pamk}}
 }
 

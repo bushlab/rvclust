@@ -6,8 +6,8 @@
 #'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @param rv rvclustobject
-#' @return annotated rvclustobject
+#' @param annotation function
+#' @return validity
 test.annotate <- function(ANNOTATE.FUN) {
 	print("Functionality not yet implemented.")
 }

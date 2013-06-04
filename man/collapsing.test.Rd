@@ -8,22 +8,19 @@
   \item{rv}{rvclustobject}
 }
 \value{
-  rvclustobject with collapsed data (composite features)
+  rvclustobject with collapsed data
 }
 \description{
-  Performs a standard collapsing test, which collapses the
-  features in a bin by taking the OR of all features. For
-  each subject, the composite feature is represented as
-  positive if any of the individual events have occurred.
+  ----------------------------------------------------------------------
+  '#\cr Performs a standard collapsing test, which
+  collapses the features in a \cr bin by taking the OR of
+  all features. For each subject, the composite \cr feature
+  is represented as positive if any of the individual
+  events \cr have occurred. \cr
+  ----------------------------------------------------------------------
+  '#\cr
 }
 \author{
   R Michael Sivley \email{mike.sivley@vanderbilt.edu}
-}
-\seealso{
-  \code{\link{rvclustobject}}
-
-  \code{\link{annotate}}
-
-  \code{\link{pamk}}
 }
 

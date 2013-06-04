@@ -23,3 +23,7 @@ Collate:
     'collapsingTest.r'
     'slidingWindow.r'
     'logreg.r'
+    'test_aggregation.r'
+    'test_annotate.r'
+    'test_association.r'
+    'test_cluster.r'

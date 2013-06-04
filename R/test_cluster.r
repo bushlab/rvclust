@@ -6,8 +6,8 @@
 #'
 #' @author R Michael Sivley \email{mike.sivley@@vanderbilt.edu}
 #' @export
-#' @param rv rvclustobject
-#' @return annotated rvclustobject
+#' @param clustering function
+#' @return validity
 test.cluster <- function(CLUSTER.FUN) {
 	data('test.rv')
 
@@ -15,7 +15,7 @@ test.cluster <- function(CLUSTER.FUN) {
 	rv <- tryCatch({
 		CLUSTER.FUN(rv,label.by='rsid',cluster.by='pos')
 		},error=function(err){
-			stop(paste("There was an error during clustering.",err,sep='\n'))
+			stop(paste("There was a runtime error.",err,sep='\n'))
 		})
 
 	# Check for valid rvclustobject
