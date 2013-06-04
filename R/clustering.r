@@ -93,19 +93,19 @@ collapse.cluster <- function(id,rv.dat,clusters,raw.dat,burden) {
   #snps <- as.character(rv.clustered.dat$SNP)
   
   # Extract those SNP columns from raw.dat
-  #snp.cols <- subset(raw.dat,select=names(raw.dat) %in% snps)
-  #snp.cols <- raw.dat[snps]
+  #obs.cols <- subset(raw.dat,select=names(raw.dat) %in% snps)
+  #obs.cols <- raw.dat[snps]
   id <- as.numeric(id)
-  snp.cols <- raw.dat[,names(raw.dat) %in% clusters[[id]]]
-  
-  all.classes <- allClass(snp.cols)
+  obs.cols <- raw.dat[,names(raw.dat) %in% clusters[[id]]]
+
+  all.classes <- allClass(obs.cols)
   
   # Compute the row-wise sum of those columns as a vector
   val <- NA
-  if (class(snp.cols) != "data.frame") {
-    val <- snp.cols}
+  if (class(obs.cols) != "data.frame") {
+    val <- obs.cols}
   else {
-    val <- rowSums(snp.cols,na.rm=TRUE)}
+    val <- rowSums(obs.cols,na.rm=TRUE)}
   
   # If burden testing is not specified, convert to 0/1 coding
   if (!burden) {
