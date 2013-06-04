@@ -30,6 +30,9 @@ pamk <- function(rv,label.by=NA,cluster.by=NA,constrain.by=NA) {
   k <- 0
   for (i in 1:length(df.matrix)) {
     df <- df.matrix[[i]]
+    print("Print statements:")
+    print(cluster.by)
+    print(df[,cluster.by])
     krange <- 2:min(15,length(df[,cluster.by])-1)
     clusters <- fpc::pamk(df[,cluster.by],krange=krange)
     df$CLUSTERID <- clusters$pamobject$clustering+k

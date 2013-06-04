@@ -30,15 +30,16 @@ create.cluster.dat <- function(clusters,rv.dat,fitness=NA) {
     cluster.dat$CHROMATIN <- sapply(cluster.dat$CHROMATIN,label.states)
   }
   
-  # Add the chromosome information
-  cluster.dat$CHR <- sapply(cluster.dat$CLUSTERID,get.chr,clusters=clusters,rv.dat=rv.dat)
-  
-  # Determine the minimum base position
-  cluster.dat$MIN.BP <- sapply(cluster.dat$CLUSTERID,get.min.bp,clusters=clusters,rv.dat=rv.dat)
-  
-  # Determine the maximum base position
-  cluster.dat$MAX.BP <- sapply(cluster.dat$CLUSTERID,get.max.bp,clusters=clusters,rv.dat=rv.dat)
-
+  # If genetic data, add the chromosome and bp window information
+  if ("SNP" %in% names(rv.dat)) {
+    cluster.dat$CHR <- sapply(cluster.dat$CLUSTERID,get.chr,clusters=clusters,rv.dat=rv.dat)
+    
+    # Determine the minimum base position
+    cluster.dat$MIN.BP <- sapply(cluster.dat$CLUSTERID,get.min.bp,clusters=clusters,rv.dat=rv.dat)
+    
+    # Determine the maximum base position
+    cluster.dat$MAX.BP <- sapply(cluster.dat$CLUSTERID,get.max.bp,clusters=clusters,rv.dat=rv.dat)
+  }
   # Determine the size of each cluster
   cluster.dat$SIZE   <- sapply(1:k,function(i){length(clusters[[i]])})
   

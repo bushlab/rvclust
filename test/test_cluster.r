@@ -9,8 +9,7 @@
 #' @param rv rvclustobject
 #' @return annotated rvclustobject
 test.cluster <- function(CLUSTER.FUN) {
-	print("Functionality not yet implemented.")
-	load('test.rv.rda')
+	data('test.rv')
 
 	# Check for runtime errors
 	rv <- tryCatch({
@@ -44,6 +43,8 @@ valid.rvclustobject <- function(rv) {
 		missing.fields <- append(missing.fields,"clusterinfo")}
 	if (length(missing.fields) > 0) {
 		fields <- paste(missing.fields,collapse=',')
-		stop(paste("Missing fields",fields,sep=': '))
+		writeLines(paste("Missing fields",fields,sep=': '))
+		return(FALSE)
 	}
+	return(TRUE)
 }
