@@ -24,7 +24,7 @@ lm <- function(rv,label.by=NA,min.fit=0.0,phen="PHENOTYPE") {
   
   # Extract the unique cluster IDs
   clusterids <- as.character(unique(clusterinfo$CLUSTERID))  
-    
+  
   # Add the covariates if provided
   covariates <- NA
   if (!any(is.na(cov.dat))) {
@@ -32,7 +32,7 @@ lm <- function(rv,label.by=NA,min.fit=0.0,phen="PHENOTYPE") {
     covariates <- covariates[3:length(covariates)]  # Filter out IDs
     collapsed <- merge(x=collapsed,y=cov.dat,by=label.by)
   }
-  phenotypes <- NA
+
   # Add additional phenotypes if provided
   if (!any(is.na(phen.dat))) {
     collapsed <- merge(x=collapsed,y=phen.dat,by=label.by)
