@@ -27,3 +27,5 @@ Collate:
     'test_annotate.r'
     'test_association.r'
     'test_cluster.r'
+    'single-marker-lm.r'
+    'visualize.r'

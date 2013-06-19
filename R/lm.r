@@ -44,6 +44,8 @@ lm <- function(rv,label.by=NA,min.fit=0.0,phen="PHENOTYPE") {
     if (!any(is.na(covariates))) {
       predictors <- paste(append(predictors,covariates),collapse='+')}
     f <- as.formula(paste(phen," ~ ",predictors,sep=''))
+    #FIXME: Remove this print statement post-debugging
+    print(f)
     cluster.lm <- stats::lm(f, data=collapsed)
     cluster.lm
   },simplify=FALSE)
