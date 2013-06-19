@@ -69,10 +69,11 @@ load_sample <- function() {
   names(map.dat) <- c('CHR','SNP','DIST','POS')
   data(raw.dat)
   names(raw.dat) <- sapply(names(raw.dat),function(x){x <- strsplit(x,'_')[[1]][1]; sub("[[punct:]]",".",x)})
+  data(rv.dat)
   rv <- list(
             "observations" =raw.dat,
             "covariates"   =NA,
-            "outcomes"     =NA,
+            "outcomes"     =raw.dat[,c(1,6)],
             "variants"     =rv.dat,
             "clusters"     =NA,
             "clusterinfo"  =NA,
@@ -121,7 +122,7 @@ load_pedmap <- function(ped.file=NA,map.file=NA,cov.file=NA,phen.file=NA,max.fre
   cov.dat  <- NA
   if (!is.na(cov.file)) {
     cov.dat <- read.table(cov.file,sep='',header=TRUE)}
-  phen.dat <- NA
+  phen.dat <- raw.dat[,c(1,6)] # Default phen.dat to the phenotype column of the PED file
   if (!is.na(phen.file)) {
     phen.dat <- read.table(phen.file,sep='',header=TRUE)}
 

@@ -54,4 +54,3 @@ valid.rvclustobject <- function(rv) {
 	}
 	return(TRUE)
 }
-}

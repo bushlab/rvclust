@@ -1,0 +1,39 @@
+
+@----------------------------------------------------------@
+|        PLINK!       |     v1.07      |   10/Aug/2009     |
+|----------------------------------------------------------|
+|  (C) 2009 Shaun Purcell, GNU General Public License, v2  |
+|----------------------------------------------------------|
+|  For documentation, citation & bug-report instructions:  |
+|        http://pngu.mgh.harvard.edu/purcell/plink/        |
+@----------------------------------------------------------@
+
+Skipping web check... [ --noweb ] 
+Writing this text to log file [ data/test.log ]
+Analysis started: Wed Jun 19 12:08:05 2013
+
+Options in effect:
+	--noweb
+	--file data/test
+	--recodeA
+	--out data/test
+
+10 (of 10) markers to be included from [ data/test.map ]
+14 individuals read from [ data/test.ped ] 
+14 individuals with nonmissing phenotypes
+Assuming a disease phenotype (1=unaff, 2=aff, 0=miss)
+Missing phenotype value is also -9
+7 cases, 7 controls and 0 missing
+14 males, 0 females, and 0 of unspecified sex
+Before frequency and genotyping pruning, there are 10 SNPs
+14 founders and 0 non-founders found
+Total genotyping rate in remaining individuals is 1
+0 SNPs failed missingness test ( GENO > 1 )
+0 SNPs failed frequency test ( MAF < 0 )
+After frequency and genotyping pruning, there are 10 SNPs
+After filtering, 7 cases, 7 controls and 0 missing
+After filtering, 14 males, 0 females, and 0 of unspecified sex
+Writing recoded file to [ data/test.raw ] 
+
+Analysis finished: Wed Jun 19 12:08:05 2013
+
