@@ -36,7 +36,7 @@ lm <- function(rv,label.by=NA,min.fit=0.0,phen="PHENOTYPE") {
   # Add additional phenotypes if provided
   if (!any(is.na(phen.dat))) {
     phenotypes <- names(phen.dat)
-    phenotypes <- phenotypes[3:length(phenotypes)]  # Filter out IDs
+    phen.dat <- phen.dat[3:length(phenotypes)]  # Filter out IDs
     collapsed <- merge(x=collapsed,y=phen.dat,by=label.by)
   }
   
