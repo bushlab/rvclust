@@ -71,9 +71,9 @@ load_sample <- function() {
   names(raw.dat) <- sapply(names(raw.dat),function(x){x <- strsplit(x,'_')[[1]][1]; sub("[[punct:]]",".",x)})
   data(rv.dat)
   rv <- list(
-            "observations" =raw.dat,
             "covariates"   =NA,
-            "outcomes"     =raw.dat[,c(1,6)],
+            "outcomes"     =raw.dat[,c(1,2,6)],
+            "observations" =raw.dat[-6],
             "variants"     =rv.dat,
             "clusters"     =NA,
             "clusterinfo"  =NA,
@@ -89,7 +89,8 @@ load_default <- function(observation.file=NA,variant.file=NA,cov.file=NA,outcome
     covariates <- read.table(cov.file,sep='',header=TRUE)}
   else{covariates=NA}
   if (!is.na(outcome.file)) {
-    outcomes   <- read.table(outcome.file,sep='',header=TRUE)}
+    outcomes   <- read.table(outcome.file,sep='',header=TRUE)
+  }
   else{outcomes=NA}
   
   if (max.freq < 100.00) {
@@ -122,7 +123,8 @@ load_pedmap <- function(ped.file=NA,map.file=NA,cov.file=NA,phen.file=NA,max.fre
   cov.dat  <- NA
   if (!is.na(cov.file)) {
     cov.dat <- read.table(cov.file,sep='',header=TRUE)}
-  phen.dat <- raw.dat[,c(1,6)] # Default phen.dat to the phenotype column of the PED file
+  phen.dat <- raw.dat[,c(1,2,6)] # Default phen.dat to the phenotype column of the PED file
+  raw.dat <- raw.dat[,-6] # Remove the phenotype from observations 
   if (!is.na(phen.file)) {
     phen.dat <- read.table(phen.file,sep='',header=TRUE)}
 
@@ -187,7 +189,7 @@ allele.frequency <- function(pedmap.path,pedmap.fname) {
 }
 
 rare.snps <- function(freq.dat,max.freq) {
-  # Removes all common variants and returns the rare subset
+  # Removes all non-occuring variants and variants occurring with higher than max frequency
   rare.snp.dat <- subset(freq.dat,MAF>0 & MAF<max.freq)
 }
 

@@ -8,7 +8,8 @@ License: GPL-3
 Depends:
     fpc (>= 2.1),
     rms (>= 3.6.3),
-    cluster (>= 1.14)
+    cluster (>= 1.14),
+    ggplot2 (>= 0.9)
 Collate:
     'rvclust-package.r'
     'clustering.r'

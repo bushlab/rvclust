@@ -24,7 +24,7 @@ lm <- function(rv,label.by=NA,min.fit=0.0,phen="PHENOTYPE") {
   
   # Extract the unique cluster IDs
   clusterids <- as.character(unique(clusterinfo$CLUSTERID))  
-  
+
   # Add the covariates if provided
   covariates <- NA
   if (!any(is.na(cov.dat))) {
@@ -44,8 +44,6 @@ lm <- function(rv,label.by=NA,min.fit=0.0,phen="PHENOTYPE") {
     if (!any(is.na(covariates))) {
       predictors <- paste(append(predictors,covariates),collapse='+')}
     f <- as.formula(paste(phen," ~ ",predictors,sep=''))
-    #FIXME: Remove this print statement post-debugging
-    print(f)
     cluster.lm <- stats::lm(f, data=collapsed)
     cluster.lm
   },simplify=FALSE)
