@@ -117,7 +117,11 @@ load_pedmap <- function(ped.file=NA,map.file=NA,cov.file=NA,phen.file=NA,max.fre
     system(paste("plink --noweb --file",paste(pedmap.path,"/",pedmap.fname,sep=''),"--recodeA --out",paste(pedmap.path,"/",pedmap.fname,sep='')))}
     
   map.dat  <- read.table(map.file,sep='',header=FALSE,col.names=c('CHR','SNP','DIST','POS'))
-  map.dat$SNP <- sapply(map.dat$SNP,function(x){sub("[[:punct:]]",".",x)})
+  # Do not use `apply` for this loop! Massive memory bloat!
+  for (i in length(map.dat$SNP)) {
+    x <- map.dat[i,"SNP"]
+    temp <- append(temp,sub("[[:punct:]]",".",x))
+  }
   raw.dat  <- read.table(raw.file,sep='',header=TRUE)
   names(raw.dat) <- sapply(names(raw.dat),function(x){x <- strsplit(x,'_')[[1]][1]; sub("[[punct:]]",".",x)})
   cov.dat  <- NA
