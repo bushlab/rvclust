@@ -118,6 +118,7 @@ load_pedmap <- function(ped.file=NA,map.file=NA,cov.file=NA,phen.file=NA,max.fre
     
   map.dat  <- read.table(map.file,sep='',header=FALSE,col.names=c('CHR','SNP','DIST','POS'))
   # Do not use `apply` for this loop! Massive memory bloat!
+  temp <- c()
   for (i in length(map.dat$SNP)) {
     x <- map.dat[i,"SNP"]
     temp <- append(temp,sub("[[:punct:]]",".",x))
