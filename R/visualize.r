@@ -57,11 +57,13 @@ visualize <- function(rvobj,label.by,phen.label='',top=10,max.per.clus=20,fig.wi
 
   print('all (represented) p-values')
   print(df$PVALUE)
+  my.ylim <- c(0,min(20,max(-log(df$PVALUE))))
+  print(my.ylim)
 
   # Plot the p-values
   pdf(paste('barplot_',phen.label,'.pdf',sep=''),height=9,width=fig.width)
   #bplot <- barplot(-log(df$PVALUE),horiz=TRUE,col=df$COLOR,names.arg=df[,label.by],main="The Effect of Clustering on Rare Variant Significance",xlab="Inv Log P-Value",ylab=label.by)
-  bplot <- barplot(-log(df$PVALUE),col=df$COLOR,las=2,cex.names=0.5,names.arg=df[,label.by],main="The Effect of Clustering on Rare Variant Significance",xlab=label.by,ylab="Inv Log P-Value")
+  bplot <- barplot(-log(df$PVALUE),col=df$COLOR,las=2,cex.names=0.5,names.arg=df[,label.by],ylim=my.ylim,main="The Effect of Clustering on Rare Variant Significance",xlab=label.by,ylab="Inv Log P-Value")
   lines(x=bplot,y=rep(-log(var.sig.thresh),nrow(df)),col="blue")
   lines(x=bplot,y=rep(-log(clus.sig.thresh),nrow(df)),col="orange")
   print(bplot)

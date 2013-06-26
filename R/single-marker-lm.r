@@ -27,7 +27,7 @@ single.marker.lm <- function(rv,label.by=NA,phen="PHENOTYPE") {
   }
 
   #FIXME Assumption made that the variants labels are in the first column
-  variant.names <- variants[,1]
+  variant.names <- as.character(variants[,1])
   models <- sapply(variant.names,function(variant){
     predictors <- variant
     if (!any(is.na(covariates))) {

@@ -30,7 +30,7 @@
 #'  clusterinfo\cr
 #'  collapsed\cr
 #'  }
-rvclustobject <- function(observation.file=NA,variant.file=NA,cov.file=NA,outcome.file=NA,max.freq=100.0) {
+rvclustobject <- function(observation.file=NA,variant.file=NA,cov.file=NA,outcome.file=NA,max.freq=1.0) {
   if (is.na(observation.file)) {
     rv <- load_sample()}
 
@@ -82,7 +82,7 @@ load_sample <- function() {
   return(rv)
 }
 
-load_default <- function(observation.file=NA,variant.file=NA,cov.file=NA,outcome.file=NA,max.freq=100.0) {
+load_default <- function(observation.file=NA,variant.file=NA,cov.file=NA,outcome.file=NA,max.freq=1.0) {
   observations <- read.table(observation.file,sep='',header=TRUE)
   variants     <- read.table(variant.file,sep='',header=TRUE)
   if (!is.na(cov.file)) {
@@ -93,7 +93,7 @@ load_default <- function(observation.file=NA,variant.file=NA,cov.file=NA,outcome
   }
   else{outcomes=NA}
   
-  if (max.freq < 100.00) {
+  if (max.freq < 1.0) {
     writeLines("RVCLUST does not yet support frequency calculations for non-genetic data.")}
 
   rv <- list(
@@ -108,7 +108,7 @@ load_default <- function(observation.file=NA,variant.file=NA,cov.file=NA,outcome
   return(rv)
 }
 
-load_pedmap <- function(ped.file=NA,map.file=NA,cov.file=NA,phen.file=NA,max.freq=100.0) {
+load_pedmap <- function(ped.file=NA,map.file=NA,cov.file=NA,phen.file=NA,max.freq=1.0) {
   pedmap.path  <- dirname(ped.file)
   pedmap.fname <- unlist(strsplit(basename(ped.file),split="\\."))[1]
   raw.file  <- paste(pedmap.path,"/",pedmap.fname,".raw",sep='')
@@ -158,7 +158,14 @@ rare.vars <- function(pedmap.path,pedmap.fname,map.dat,max.freq) {
   if (is.na(pedmap.path) & is.na(pedmap.fname)) {
     data(rv.dat)
   }
-  
+  else if (max.freq==1.0) {
+    rv.dat <- data.frame("SNP"=map.dat$SNP)
+    rv.dat$MA  <- NA
+    rv.dat$MAF <- NA
+
+    # Use the map file to add position information
+    rv.dat <- add.pos(rv.dat,map.dat)
+  }
   else {
     snp.dat <- allele.frequency(pedmap.path,pedmap.fname)
     snp.dat$SNP <- sapply(snp.dat$SNP,function(x){sub("[[:punct:]]",".",x)})
